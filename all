@@ -1,0 +1,22 @@
+!! PLEASE REVIEW THIS LOG FOR SENSITIVE INFORMATION BEFORE SHARING !!
+
+Dart Code extension: 3.66.0
+Flutter extension: 3.66.0 (not activated)
+
+App: Visual Studio Code
+Version: 1.79.2
+Platform: win
+
+HTTP_PROXY: undefined
+NO_PROXY: undefined
+
+Logging Categories:
+    DevTools
+
+Mon Jun 26 2023 [11:38:37 GMT+0100 (West Africa Standard Time)] Log file started
+[11:38:38 AM] [DevTools] [Info] Spawning C:\src\flutter\flutter\bin\cache\dart-sdk\bin\dart.exe with args ["devtools","--machine","--try-ports","10","--allow-embedding"]
+[11:38:38 AM] [DevTools] [Info] ..  with {"toolEnv":{"FLUTTER_HOST":"VSCode","PUB_ENVIRONMENT":"vscode.dart-code"}}
+[11:38:38 AM] [DevTools] [Info]     PID: 2800
+[11:38:52 AM] [DevTools] [Info] <== {"event":"server.started","method":"server.started","params":{"host":"127.0.0.1","port":9101,"pid":12624,"protocolVersion":"1.1.0"}}
+[11:43:30 AM] [DevTools] [Info] ==> {"id":"1","method":"vm.register","params":{"uri":"http://127.0.0.1:2473/STnnKXYyiIM=/"}}
+[11:43:30 AM] [DevTools] [Info] <== {"id":"1","result":{"success":true}}

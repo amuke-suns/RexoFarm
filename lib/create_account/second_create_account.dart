@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
-import 'package:rexofarm/inputs/input_field.dart';
-import 'package:rexofarm/kyc/Kyc_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../inputs/phoneinput.dart';
+import 'login_page.dart';
+/*
 
-import 'create_account1.dart';
+class SecondCreateAccountPage extends StatefulWidget {
+  final Function(String?) onFirstNameSaved;
+  final Function(String?) onLastNameSaved;
+  final Function(String?) onPhoneNumberSaved;
 
-class LoginPageState extends StatefulWidget {
-  final String email;
-  final String password;
-
-  const LoginPageState({Key? key, required this.email, required this.password}) : super(key: key);
+  const SecondCreateAccountPage({
+    Key? key,
+    required this.onFirstNameSaved,
+    required this.onLastNameSaved,
+    required this.onPhoneNumberSaved,
+  }) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<SecondCreateAccountPage> createState() => _SecondCreateAccountPageState();
 }
 
-bool isLoading = false;
-
-class _LoginPageState extends State<LoginPageState> {
+class _SecondCreateAccountPageState extends State<SecondCreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController =
-      TextEditingController(text: '');
-  final TextEditingController passwordController =
-      TextEditingController(text: '');
+  bool isPasswordVisible = false;
+  bool isLoading = false;
+
+  final PageController _controller = PageController(initialPage: 1);
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
-
-  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +45,11 @@ class _LoginPageState extends State<LoginPageState> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 68, left: 100, bottom: 48, right: 100),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(0)),
+                margin: const EdgeInsets.only(top: 68, left: 100, right: 100),
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(0)),
                 child: const Text(
-                  'Log in',
+                  'Create Account',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Quicksand',
@@ -56,42 +59,47 @@ class _LoginPageState extends State<LoginPageState> {
                   ),
                 ),
               ),
+              const SizedBox(height: 30),
+              Container(
+                height: 8,
+                width: 46,
+                margin: const EdgeInsets.only(left: 100, right: 100, top: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: SmoothPageIndicator(
+                    count: 2,
+                    controller: _controller,
+                    axisDirection: Axis.horizontal,
+                    effect: const ExpandingDotsEffect(
+                      dotWidth: 10,
+                      dotHeight: 8,
+                      dotColor: Colors.grey,
+                      activeDotColor: Color(0xFF006E21),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 37),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     InputField(
-                      labelText: 'Email Address or Phone Number',
-                      controller: emailController,
+                      labelText: 'Email Address',
+                      onSaved: (text) {},
                       validator: Validators.validateEmail,
-                      placeholderText: 'Enter your email address or phone number',
+                      hintText: 'johndoe@gmail.com',
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 29),
                     InputField(
                       labelText: 'Password',
-                      controller: passwordController,
+                      onSaved: (text) {},
                       validator: Validators.validatePassword,
-                      placeholderText: 'Enter your password',
+                      hintText: '*****************',
                       obscureText: true,
                       showToggle: true,
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          // Handle "Reset password" logic
-                        },
-                        child: const Text(
-                          'Reset password',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'Quicksand',
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromRGBO(0, 110, 33, 1),
-                          ),
-                        ),
-                      ),
                     ),
                     const SizedBox(height: 40),
                     Container(
@@ -99,41 +107,44 @@ class _LoginPageState extends State<LoginPageState> {
                       width: 358,
                       margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                       child: ElevatedButton(
-                        onPressed: isLoading ? null : _loginButtonPressed,
+                        onPressed: isLoading ? null : _signUpButtonPressed,
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.fromLTRB(40, 19, 40, 19),
-                          backgroundColor: isLoading ? Colors.grey : const Color.fromRGBO(0, 110, 33, 1),
+                          backgroundColor: isLoading
+                              ? Colors.grey
+                              : const Color.fromRGBO(0, 110, 33, 1),
                         ),
                         child: isLoading
                             ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                              )
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                        )
                             : const Text(
-                              'Log in',
-                             style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Quicksand',
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                             ), ),
+                          'Sign Up',
+                          style: TextStyle(
+                            fontFamily: 'Quicksand',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 64),
+                    const SizedBox(height: 50),
                     Center(
                       child: GestureDetector(
                         onTap: () {
                           // Handle "Third party signup" link click
                         },
                         child: const Text(
-                          'Third party log in',
+                          'Third party sign up',
                           style: TextStyle(
                             fontFamily: 'Quicksand',
                             fontSize: 14,
@@ -143,10 +154,10 @@ class _LoginPageState extends State<LoginPageState> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
               Column(
                 children: [
                   SizedBox(
@@ -155,18 +166,17 @@ class _LoginPageState extends State<LoginPageState> {
                     child: Row(
                       children: [
                         Flexible(
-                          
                           child: OutlinedButton(
                             onPressed: () {
                               // Handle Facebook login
                             },
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xFFF3F4EE),   
+                              backgroundColor: Color(0xFFF3F4EE),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                              
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 12),
                             ),
                             child: Row(
                               children: [
@@ -196,12 +206,12 @@ class _LoginPageState extends State<LoginPageState> {
                               // Handle Google login
                             },
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xFFF3F4EE), 
+                              backgroundColor: Color(0xFFF3F4EE),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              padding: const EdgeInsets.only(left: 40, right: 34, top: 12, bottom: 12),
-                              // side: const BorderSide(color: Color.fromRGBO(57, 101, 107, 1)),
+                              padding: const EdgeInsets.only(
+                                  left: 40, right: 34, top: 12, bottom: 12),
                             ),
                             child: Row(
                               children: [
@@ -229,30 +239,32 @@ class _LoginPageState extends State<LoginPageState> {
                   ),
                 ],
               ),
-              const SizedBox(height: 88),
+              const SizedBox(height: 140),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                const Text('Don\'t have an account?',
-              style: TextStyle(
-                fontFamily: 'Quicksand',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF767873),
-              ),
-              ),
-              TextButton(
+                  const Text(
+                    'Already have an account?',
+                    style: TextStyle(
+                      fontFamily: 'Quicksand',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF767873),
+                    ),
+                  ),
+                  TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateAccountPage(),
-                           // Replace with your LoginPage widget
+                          builder: (context) =>
+                              LoginPage(),
+                          // Replace with your LoginPage widget
                         ),
                       );
                     },
                     child: const Text(
-                      'Sign up',
+                      'Login',
                       style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'Quicksand',
@@ -263,7 +275,7 @@ class _LoginPageState extends State<LoginPageState> {
                   ),
                 ],
               ),
-              
+              // const SizedBox(height: 142),
             ],
           ),
         ),
@@ -271,60 +283,87 @@ class _LoginPageState extends State<LoginPageState> {
     );
   }
 
-  void _loginButtonPressed() {
+  void _signUpButtonPressed() {
     if (_formKey.currentState!.validate()) {
       // Send the API request with the collected data
-      _loginPageState();
+      // _createAccount();
     }
   }
 
-  Future<void> _loginPageState() async {
+*/
+/*Future<void> _createAccount() async {
     setState(() {
-      isLoading = true;
+      isLoading = true; // Enable loading state
     });
+    const url = 'https://rexofarm-logistics-api.onrender.com/v1/auth/sign-up'; // Replace with the actual API endpoint
 
-    final response = await http.post(
-      Uri.parse('https://rexofarm-logistics-api.onrender.com/v1/auth/sign-in'),
-      body: {
-        'email': emailController.text,
-        'password': passwordController.text,
-      },
-    );
+    final body = {
+      'firstName': widget.user.firstName,
+      'lastName': widget.user.lastName,
+      'phone': widget.user.phoneNumber,
+      'email': emailController.text,
+      'password': passwordController.text,
+    };
 
     try {
+      final response = await http.post(Uri.parse(url), body: body);
+      final responseBody = response.body;
+      final decodedResponse = json.decode(responseBody);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         const snackBar = SnackBar(
-          content: Text('You have successfully logged in!'),
+          content: Text('Account created successfully'),
           behavior: SnackBarBehavior.floating,
         );
 
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => KycPage(
+            builder: (context) => LoginPageState(
               email: emailController.text,
               password: passwordController.text,
             ),
           ),
         );
       } else if (response.statusCode == 400) {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid email or password'),
-          ),
-        );
-      } else {
-        // ignore: use_build_context_synchronously
+        // Bad request error (e.g., email or password is invalid)
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('Invalid email or password.'),
+            title: const Text('Check your credentials'),
+            content: const Text("Email must be an email. Password must be longer than or equal to 8 characters."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else if (response.statusCode == 409) {
+        // Duplicate key error (email already registered)
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Email Already Registered'),
+            content: const Text('The email address you entered is already registered. Please use a different email address.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        final messages = (decodedResponse['messages'] as List<dynamic>?) ?? [];
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Check your credentials'),
+            content: Text(messages.join('\n')),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -334,16 +373,16 @@ class _LoginPageState extends State<LoginPageState> {
           ),
         );
       }
-      print(response.body);
-      print(response.statusCode);
-      print(response.reasonPhrase);
-    } catch (e) {
-      // Handle any exceptions or network errors
-      print('Exception: $e');
+    } catch (error) {
+      // Handle the error here (e.g., show error message)
+      print('Error: $error');
     } finally {
       setState(() {
         isLoading = false; // Disable loading state
       });
     }
-  }
+  }*//*
+
 }
+
+*/

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/Drivers/vehicle_kyc.dart';
-import 'package:rexofarm/inputs/input_field.dart';
+import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../dashboard/dashboard.dart';
@@ -91,28 +91,28 @@ class DriverDetailsScreen extends StatelessWidget {
                           labelText: 'Vehicle Type',
                           controller: vehicleTypeController,
                           validator: Validators.validateVehicleType,
-                          placeholderText: 'Enter your vehicle type',
+                          hintText: 'Enter your vehicle type',
                         ),
                         const SizedBox(height: 16),
                         InputField(
                           labelText: 'Vehicle Make',
                           controller: vehicleTypeController,
                           validator: Validators.validateVehicleType,
-                          placeholderText: 'Ford',
+                          hintText: 'Ford',
                         ),
                         const SizedBox(height: 16),
                         InputField(
                           labelText: 'Vehicle Model',
                           controller: vehicleTypeController,
                           validator: Validators.validateVehicleType,
-                          placeholderText: 'Transit',
+                          hintText: 'Transit',
                         ),
                         const SizedBox(height: 16),
                         InputField(
                           labelText: 'Number Plate',
                           controller: numberPlateController,
                           validator: Validators.validateNumberPlate,
-                          placeholderText: 'ABC-123-XYZ',
+                          hintText: 'ABC-123-XYZ',
                         ),
                       ],
                     ),

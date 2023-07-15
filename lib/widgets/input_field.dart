@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class InputField extends StatefulWidget {
   final String labelText;
-  final String? placeholderText;
-  final TextEditingController controller;
+  final String? hintText;
+  final Function(String?)? onSaved;
+  final TextEditingController? controller;
   final String? Function(String?) validator;
   final bool obscureText;
   final bool showToggle;
@@ -11,15 +12,16 @@ class InputField extends StatefulWidget {
   const InputField({
     Key? key,
     required this.labelText,
-    this.placeholderText,
-    required this.controller,
+    required this.hintText,
     required this.validator,
+    this.onSaved,
+    this.controller,
     this.obscureText = false,
     this.showToggle = false,
   }) : super(key: key);
 
   @override
-  _InputFieldState createState() => _InputFieldState();
+  State<InputField> createState() => _InputFieldState();
 }
 
 class _InputFieldState extends State<InputField> {
@@ -34,7 +36,6 @@ class _InputFieldState extends State<InputField> {
           widget.labelText,
           style: const TextStyle(
             color: Color.fromRGBO(26, 28, 25, 1),
-            fontFamily: 'Quicksand',
             fontSize: 12,
             fontWeight: FontWeight.w400,
           ),
@@ -46,12 +47,11 @@ class _InputFieldState extends State<InputField> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: TextFormField(
-            controller: widget.controller,
+            onSaved: widget.onSaved,
             validator: widget.validator,
             obscureText: widget.obscureText && _isObscure,
             style: const TextStyle(
               color: Colors.black,
-              fontFamily: 'Quicksand',
               fontSize: 12,
               fontWeight: FontWeight.w400,
             ),
@@ -59,7 +59,7 @@ class _InputFieldState extends State<InputField> {
               contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              hintText: widget.placeholderText,
+              hintText: widget.hintText,
               suffixIcon: widget.showToggle
                   ? IconButton(
                       icon: Icon(

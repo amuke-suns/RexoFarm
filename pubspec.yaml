@@ -13,9 +13,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-
-
   cupertino_icons: ^1.0.2
   smooth_page_indicator: ^1.1.0
   dotted_border: ^2.0.0+3
@@ -24,6 +21,9 @@ dependencies:
   google_fonts: ^4.0.4
   http: ^0.13.6
   phone_number: ^2.0.1
+  flutter_svg: ^2.0.7
+  shared_preferences: ^2.2.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - images/onboarding/
 
   fonts:
     - family: Quicksand

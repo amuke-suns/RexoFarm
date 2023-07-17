@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rexofarm/inputs/input_field.dart';
+import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/inputs/phoneinput.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -90,7 +90,7 @@ class NextOfKinScreen extends StatelessWidget {
                       labelText: 'First Name',
                       controller: firstNameController,
                       validator: Validators.validateName,
-                      placeholderText: 'Enter your first name',
+                      hintText: 'Enter your first name',
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -99,7 +99,7 @@ class NextOfKinScreen extends StatelessWidget {
                       labelText: 'Last Name',
                       controller: lastNameController,
                       validator: Validators.validateName,
-                      placeholderText: 'Enter your last name',
+                      hintText: 'Enter your last name',
                     ),
                   ),
                 ],
@@ -109,14 +109,14 @@ class NextOfKinScreen extends StatelessWidget {
                 labelText: 'Gender',
                 controller: genderController,
                 validator: Validators.validateGender,
-                placeholderText: 'Choose your Gender',
+                hintText: 'Choose your Gender',
               ),
               const SizedBox(height: 16),
               InputField(
                 labelText: 'Relationship',
                 controller: relationshipController,
                 validator: Validators.validateRelationship,
-                placeholderText: 'Choose your relationship',
+                hintText: 'Choose your relationship',
               ),
               const SizedBox(height: 16),
               PhoneInput(

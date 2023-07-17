@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rexofarm/inputs/input_field.dart';
+import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -79,21 +79,21 @@ class NextOfKinAddressScreen extends StatelessWidget {
               labelText: 'State of Residence',
               controller: stateController,
               validator: Validators.validateState,
-              placeholderText: 'Enter your state of residence',
+              hintText: 'Enter your state of residence',
             ),
             const SizedBox(height: 16),
             InputField(
               labelText: 'City',
               controller: cityController,
               validator: Validators.validateCity,
-              placeholderText: 'Enter your city',
+              hintText: 'Enter your city',
             ),
             const SizedBox(height: 16),
             InputField(
               labelText: 'Home Address',
               controller: homeAddressController,
               validator: Validators.validateHomeAddress,
-              placeholderText: 'Enter your home address',
+              hintText: 'Enter your home address',
             ),
             const SizedBox(height: 250),
             SizedBox(

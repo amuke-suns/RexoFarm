@@ -96,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       'images/Rectangle 91.png',
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     top:25,
                     left: 32,
                     child: Text(
@@ -107,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     top: 75,
                     left: 32,
                     child: Text(
@@ -118,7 +118,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     top: 100,
                     left: 32,
                     child: Row(
@@ -161,13 +161,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
-
-              
-
-
           const SizedBox(height: 25,),
               Container(
-         margin: const EdgeInsets.fromLTRB(0, 0, 220, 24),
+                    margin: const EdgeInsets.fromLTRB(0, 0, 220, 24),
                     child: const Text(
                       'Recent Shipments',
                       style: TextStyle (

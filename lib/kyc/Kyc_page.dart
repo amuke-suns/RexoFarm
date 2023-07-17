@@ -9,12 +9,8 @@ import 'second_kyc_page.dart';
 
 
 class KycPage extends StatefulWidget {
-  final String email;
-  final String password;
 
-   const KycPage({Key? key,  
-  required this.email, 
-  required this.password})
+   const KycPage({Key? key})
    : super(key: key);
 
     @override

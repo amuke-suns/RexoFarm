@@ -1,71 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:rexofarm/create-account/create_account1.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:rexofarm/create_account/create_acct.dart';
+import 'package:rexofarm/onboarding/onboarding_page.dart';
+import 'package:rexofarm/services/storage/storage_service.dart';
+import 'package:rexofarm/utilities/constants.dart';
+import 'package:rexofarm/view_models/auth_view_model.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      
-    home: RexoFarmApp(),
-  ),
+    FutureBuilder<bool>(
+      future: StorageServiceImpl().showOnBoarding(),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return RexoFarmApp(showOnBoarding: snapshot.data!);
+        } else {
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'RexoFarm',
+            home: Scaffold(),
+          );
+        }
+      },
+    ),
   );
 }
 
 class RexoFarmApp extends StatelessWidget {
-  const RexoFarmApp({super.key});
+  final bool showOnBoarding;
+
+  const RexoFarmApp({
+    super.key,
+    required this.showOnBoarding,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'RexoFarm',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.green,
-          accentColor: Colors.orange,
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'RexoFarm',
+        theme: ThemeData(
+          fontFamily: 'QuickSand',
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: kAppPrimaryColor,
+            secondary: kAppSecondaryColor,
           ),
-          bodyLarge: TextStyle(
-            fontSize: 16,
-            color: Colors.black,
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
           ),
         ),
+        home: showOnBoarding
+            ? const OnBoardingScreen()
+            : const CreateAccountPage(),
       ),
-      home: const CreateAccountPage(),
     );
   }
-
-  Future<void> loginUser(String email, String password) async {
-  try {
-    final response = await http.post(
-      Uri.parse('https://rexofarm-logistics-api.onrender.com/v1/auth/sign-up'),
-      body: {
-        'email': email,
-        'password': password,
-        'firstName': '',
-        'lastName': '',
-        'phoneNumber': '',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Login successful, process the response
-      // You can store the session token or user information here
-      // or navigate to another screen indicating successful login
-    } else {
-      // Login failed, handle the error
-      // You can display an error message to the user
-    }
-  } catch (e) {
-    // Handle any exceptions or network errors
-  }
 }
-
-}
-

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'bottom_navigation_bar.dart';
 import 'see_more_button.dart';
 
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -29,11 +28,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     print('See more button pressed');
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Align(
           alignment: Alignment.center,
           child: Container(
@@ -67,15 +65,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         right: 0.0,
                         top: 8.0,
                       ),
-                      width: 36 ,
-                      height: 36 ,
+                      width: 36,
+                      height: 36,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Image.asset(
                         'images/Notification.png',
-                        width: 36 ,
-                        height: 36 ,
+                        width: 36,
+                        height: 36,
                       ),
                     ),
                   ],
@@ -96,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       'images/Rectangle 91.png',
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     top:25,
                     left: 32,
                     child: Text(
@@ -107,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 75,
                     left: 32,
                     child: Text(
@@ -118,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 100,
                     left: 32,
                     child: Row(
@@ -161,9 +159,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
+
+              
+
+
           const SizedBox(height: 25,),
               Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 220, 24),
+         margin: const EdgeInsets.fromLTRB(0, 0, 220, 24),
                     child: const Text(
                       'Recent Shipments',
                       style: TextStyle (
@@ -564,11 +566,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       ),
       ),
-       bottomNavigationBar: BottomNavigationBarWidget(
+      bottomNavigationBar: BottomNavigationBarWidget(
         currentIndex: _currentIndex,
         onTap: onTabTapped,
       ),
     );
-     
   }
 }

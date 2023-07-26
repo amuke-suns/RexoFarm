@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
-import '../home.dart';
 
 import 'drivers_address_page.dart';
 
@@ -227,12 +227,7 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DriverAddressPage(),
-                            ),
-                          );
+                          NavigationUtils.goTo(context, DriverAddressPage());
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -254,12 +249,7 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Home(),
-                            ),
-                          );
+                          NavigationUtils.clearStackAndHome(context);
                         },
                         child: const Text(
                           'Skip',

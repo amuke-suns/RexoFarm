@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rexofarm/screens/home.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -183,12 +183,7 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout> {
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          ),
-                        );
+                        NavigationUtils.clearStackAndHome(context);
                       },
                       child: const Text(
                         'Skip',

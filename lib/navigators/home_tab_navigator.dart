@@ -5,11 +5,11 @@ import 'package:rexofarm/screens/profile_page.dart';
 import 'package:rexofarm/screens/shipment_page.dart';
 
 
-class AppNavigator extends StatelessWidget {
+class HomeTabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final TabItem tabItem;
 
-  const AppNavigator({
+  const HomeTabNavigator({
     super.key,
     required this.navigatorKey,
     required this.tabItem,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../home.dart';
 
 class NextOfKinAddressPage extends StatelessWidget {
   final TextEditingController stateController = TextEditingController();
@@ -100,13 +99,7 @@ class NextOfKinAddressPage extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                      builder: (context) => 
-                       const Home()),
-                   );
-                  // Add your logic here
+                  NavigationUtils.clearStackAndHome(context);
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -128,12 +121,7 @@ class NextOfKinAddressPage extends StatelessWidget {
             Center(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Home(),
-                      ),
-                    );
+                    NavigationUtils.clearStackAndHome(context);
                   },
                   child: const Text(
                     'Skip',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/layouts/upload_single_image_layout.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/vehicle_details_page.dart';
 
 class NinSlipPage extends StatelessWidget {
@@ -13,13 +14,7 @@ class NinSlipPage extends StatelessWidget {
       imageTitle: 'Upload NIN Slip',
       imageDescription: 'Capture clear image of NIN slip.',
       onNextPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VehicleDetailsPage(),
-          ),
-        );
-        // Add your logic here
+        NavigationUtils.goTo(context, VehicleDetailsPage());
       },
     );  }
 }

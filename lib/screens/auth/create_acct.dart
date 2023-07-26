@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/widgets/goto_auth.dart';
 import 'package:rexofarm/widgets/third_party_sign_up.dart';
 import 'create_acct_first_page.dart';
@@ -24,11 +25,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     if (form.validate()) {
       form.save();
 
-      Navigator.push(
+      NavigationUtils.goTo(
         context,
-        MaterialPageRoute(
-          builder: (context) => const CreateAccountSecondPage(),
-        ),
+        const CreateAccountSecondPage(),
       );
     }
   }
@@ -81,8 +80,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         child: Column(
                           children: [
                             CreateAccountFirstPage(
-                              onNextPressed:
-                                  _navigateToSecondCreateAccountPage,
+                              onNextPressed: _navigateToSecondCreateAccountPage,
                             ),
                           ],
                         ),
@@ -93,12 +91,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       label: 'Already have an account?',
                       buttonLabel: 'Login',
                       buttonOnPressed: () {
-                        Navigator.push(
+                        NavigationUtils.goTo(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                            // Replace with your LoginPage widget
-                          ),
+                          const LoginPage(),
                         );
                       },
                     )

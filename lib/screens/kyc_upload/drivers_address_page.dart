@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/kin_page.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../home.dart';
 
 class DriverAddressPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -112,13 +112,7 @@ class DriverAddressPage extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NextOfKinPage(),
-                    ),
-                  );
-                  // Add your logic here
+                  NavigationUtils.goTo(context, NextOfKinPage());
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -140,12 +134,7 @@ class DriverAddressPage extends StatelessWidget {
             Center(
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Home(),
-                    ),
-                  );
+                  NavigationUtils.clearStackAndHome(context);
                 },
                 child: const Text(
                   'Skip',

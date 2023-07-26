@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/inputs/phoneinput.dart';
 import 'package:rexofarm/validators.dart';
@@ -16,12 +17,11 @@ class NextOfKinPage extends StatelessWidget {
 
   NextOfKinPage({Key? key}) : super(key: key);
 
-    final PageController _controller = PageController(initialPage: 1);
+  final PageController _controller = PageController(initialPage: 1);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -128,13 +128,7 @@ class NextOfKinPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                       context,
-                       MaterialPageRoute(
-                        builder: (context) => 
-                        NextOfKinAddressPage()),
-                     );
-                    // Add your logic here
+                    NavigationUtils.goTo(context, NextOfKinAddressPage());
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -153,15 +147,10 @@ class NextOfKinPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-            Center(
+              Center(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Home(),
-                      ),
-                    );
+                    NavigationUtils.clearStackAndHome(context);
                   },
                   child: const Text(
                     'Skip',

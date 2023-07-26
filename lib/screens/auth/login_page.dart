@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/license_front_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
@@ -114,12 +115,9 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
                       label: 'Don\'t have an account?',
                       buttonLabel: 'Sign up',
                       buttonOnPressed: () {
-                        Navigator.push(
+                        NavigationUtils.goTo(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => CreateAccountPage(),
-                            // Replace with your LoginPage widget
-                          ),
+                          const CreateAccountPage(),
                         );
                       },
                     ),
@@ -150,12 +148,7 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
     dismissLoader(context);
     if (response.status == ResponseStatus.completed) {
       // Clear the navigation stack and go to the KYC page
-      Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const LicenseFrontPage(),
-        ),
-        (Route<dynamic> route) => false,
-      );
+      NavigationUtils.clearStackAndGoTo(context, const LicenseFrontPage());
     } else {
       showMessageAlert(
         context,

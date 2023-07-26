@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rexofarm/models/shipment_mock.dart';
+import 'package:rexofarm/utilities/constants.dart';
 
 class ShipmentDetailsPage extends StatelessWidget {
   final Shipment shipment;
@@ -29,6 +30,9 @@ class ShipmentDetailsPage extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   DateFormat().add_jm().add_yMMMMd().format(shipment.date),
+                  style: const TextStyle(
+                    backgroundColor: kAppSecondaryColor,
+                  ),
                 )
               ],
             ),

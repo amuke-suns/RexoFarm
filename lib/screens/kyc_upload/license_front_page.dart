@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rexofarm/layouts/upload_single_image_layout.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'license_back_page.dart';
 
 class LicenseFrontPage extends StatelessWidget {
@@ -15,12 +16,7 @@ class LicenseFrontPage extends StatelessWidget {
       imageTitle: 'Upload Driver\'s License',
       imageDescription: 'Capture front image of driver\'s license.',
       onNextPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LicenseBackPage(),
-          ),
-        );
+        NavigationUtils.goTo(context, const LicenseBackPage());
       },
     );
   }

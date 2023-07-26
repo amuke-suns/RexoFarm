@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/widgets/goto_auth.dart';
@@ -129,13 +130,7 @@ class _CreateAccountSecondPageState extends State<CreateAccountSecondPage>
                     label: 'Already have an account?',
                     buttonLabel: "Login",
                     buttonOnPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                          // Replace with your LoginPage widget
-                        ),
-                      );
+                      NavigationUtils.goTo(context, const LoginPage());
                     },
                   ),
                 ],
@@ -173,12 +168,7 @@ class _CreateAccountSecondPageState extends State<CreateAccountSecondPage>
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
+        NavigationUtils.clearStackAndGoTo(context, const LoginPage());
         break;
       case ResponseStatus.error:
       case ResponseStatus.existingEmail:

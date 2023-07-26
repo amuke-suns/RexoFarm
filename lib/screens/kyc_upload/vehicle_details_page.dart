@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rexofarm/models/vehicle.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/vehicle_images_page.dart';
 import 'package:rexofarm/utilities/constants.dart';
-import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../home.dart';
 
 class VehicleDetailsPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -117,12 +114,7 @@ class VehicleDetailsPage extends StatelessWidget {
                               numberPlate: 'xyz',
                             ),
                           );*/
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const VehicleKycPage(),
-                            ),
-                          );
+                          NavigationUtils.goTo(context, const VehicleKycPage());
                           // Add your logic here
                         },
                         style: ElevatedButton.styleFrom(
@@ -144,12 +136,7 @@ class VehicleDetailsPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Home(),
-                          ),
-                        );
+                        NavigationUtils.clearStackAndHome(context);
                       },
                       child: const Text(
                         'Skip',

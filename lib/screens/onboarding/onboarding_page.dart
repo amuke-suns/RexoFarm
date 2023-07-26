@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/auth/create_acct.dart';
 import 'package:rexofarm/services/storage/storage_service.dart';
 import 'package:rexofarm/utilities/constants.dart';
@@ -60,7 +61,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       'Skip',
                       style: TextStyle(
                         color: kAppPrimaryColor,
-                          fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -142,11 +143,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void _goToCreateAccountPage(BuildContext context) {
     StorageServiceImpl().setShowOnBoarding(false);
 
-    Navigator.pushReplacement(
+    NavigationUtils.replacePage(
       context,
-      MaterialPageRoute(
-        builder: (_) => const CreateAccountPage(),
-      ),
+      const CreateAccountPage(),
     );
   }
 }

@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:rexofarm/models/api_response.dart';
 import 'package:rexofarm/models/driver.dart';
 import 'package:rexofarm/models/user.dart';
-import 'package:rexofarm/models/vehicle.dart';
 
 import '../services/web_api/auth_api_impl.dart';
 
@@ -49,15 +50,6 @@ class AuthViewModel extends ChangeNotifier {
     );
 
     _userToken = response.token;
-
-    return response;
-  }
-
-  Future<ApiResponse> uploadVehicleDetails(Vehicle vehicle) async {
-    final response = await AuthApiImpl().uploadVehicleDetails(
-      userToken!,
-      vehicle,
-    );
 
     return response;
   }

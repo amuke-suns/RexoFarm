@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/inputs/phoneinput.dart';
+import 'package:rexofarm/widgets/phone_input.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
@@ -19,9 +19,6 @@ class CreateAccountFirstPage extends StatefulWidget {
 }
 
 class _CreateAccountFirstPageState extends State<CreateAccountFirstPage> {
-  final TextEditingController _phoneNumberController =
-      TextEditingController(text: '');
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,12 +48,11 @@ class _CreateAccountFirstPageState extends State<CreateAccountFirstPage> {
         ),
         const SizedBox(height: 29),
         PhoneInput(
-          controller: _phoneNumberController,
           onPhoneNumberChanged: (text) {
             Provider.of<AuthViewModel>(
               context,
               listen: false,
-            ).phoneNumber = text ?? "";
+            ).phoneNumber = text;
           },
         ),
         const SizedBox(height: 64),

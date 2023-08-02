@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class PhoneInput extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController controller = TextEditingController(text: '');
   final void Function(String) onPhoneNumberChanged;
 
-  const PhoneInput({
+  PhoneInput({
     Key? key,
-    required this.controller,
     required this.onPhoneNumberChanged,
   }) : super(key: key);
 
   @override
-  _PhoneInputState createState() => _PhoneInputState();
+  State<PhoneInput> createState() => _PhoneInputState();
 }
 
 class _PhoneInputState extends State<PhoneInput> {
-  String selectedCountryCode = '+234'; // Default country code, change as per your requirement
+  // Default country code, change as per your requirement
+  String selectedCountryCode = '+234';
 
   @override
   Widget build(BuildContext context) {
@@ -59,47 +59,47 @@ class _PhoneInputState extends State<PhoneInput> {
                     ),
                     DropdownMenuItem(
                       value: '+44', // United Kingdom
-                      child:  Text('+44'),
+                      child: Text('+44'),
                     ),
                     DropdownMenuItem(
                       value: '+61', // Australia
-                      child:  Text('+61'),
+                      child: Text('+61'),
                     ),
                     DropdownMenuItem(
                       value: '+33', // France
-                      child:  Text('+33'),
+                      child: Text('+33'),
                     ),
                     DropdownMenuItem(
                       value: '+49', // Germany
-                      child:  Text('+49'),
+                      child: Text('+49'),
                     ),
                     DropdownMenuItem(
                       value: '+91', // India
-                      child:  Text('+91'),
+                      child: Text('+91'),
                     ),
                     DropdownMenuItem(
                       value: '+81', // Japan
-                      child:  Text('+81'),
+                      child: Text('+81'),
                     ),
                     DropdownMenuItem(
                       value: '+86', // China
-                      child:  Text('+86'),
+                      child: Text('+86'),
                     ),
                     // Add more countries and corresponding country codes here
-                  ], 
-
+                  ],
                 ),
               ),
               Expanded(
                 child: TextField(
                   controller: widget.controller,
                   onChanged: (value) {
-                    final formattedPhoneNumber = '$selectedCountryCode $value';
+                    final formattedPhoneNumber = '$selectedCountryCode$value';
                     widget.onPhoneNumberChanged(formattedPhoneNumber);
                   },
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                     border: InputBorder.none,
                   ),
                 ),

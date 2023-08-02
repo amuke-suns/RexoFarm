@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/models/api_response.dart';
-import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
-import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/view_models/kyc_view_model.dart';
 import 'package:rexofarm/widgets/form_header_card.dart';
 import 'package:rexofarm/widgets/input_field.dart';
+import 'package:rexofarm/widgets/phone_input.dart';
 import 'package:rexofarm/validators.dart';
 
-class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
+import 'kin_address_page.dart';
+
+class NextOfKinPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  NextOfKinAddressPage({Key? key}) : super(key: key);
+  NextOfKinPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,9 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     FormHeaderCard(
-                      title: 'Update Profile',
-                      subtitle: 'Next of Kin\'s Address',
-                      pageIndicatorCount: 2,
+                      title: 'Upload Profile',
+                      subtitle: 'Next of Kin',
+                      pageIndicatorCount: 1,
                       totalIndicators: 3,
                     ),
                     Expanded(
@@ -39,40 +39,69 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                         key: _formKey,
                         child: Column(
                           children: [
-                            InputField(
-                              labelText: 'State of Residence',
-                              onSaved: (value) {
-                                Provider.of<KycViewModel>(
-                                  context,
-                                  listen: false,
-                                ).kin.state = value!;
-                              },
-                              validator: Validators.validateState,
-                              hintText: 'Enter your state of residence',
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: InputField(
+                                    labelText: 'First Name',
+                                    onSaved: (value) {
+                                      Provider.of<KycViewModel>(
+                                        context,
+                                        listen: false,
+                                      ).kin.firstName = value!;
+                                    },
+                                    validator: Validators.validateName,
+                                    hintText: 'Enter your first name',
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: InputField(
+                                    labelText: 'Last Name',
+                                    onSaved: (value) {
+                                      Provider.of<KycViewModel>(
+                                        context,
+                                        listen: false,
+                                      ).kin.lastName = value!;
+                                    },
+                                    validator: Validators.validateName,
+                                    hintText: 'Enter your last name',
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 16),
                             InputField(
-                              labelText: 'City',
+                              labelText: 'Gender',
                               onSaved: (value) {
                                 Provider.of<KycViewModel>(
                                   context,
                                   listen: false,
-                                ).kin.city = value!;
+                                ).kin.gender = value!;
                               },
-                              validator: Validators.validateCity,
-                              hintText: 'Enter your city',
+                              validator: Validators.validateGender,
+                              hintText: 'Choose your Gender',
                             ),
                             const SizedBox(height: 16),
                             InputField(
-                              labelText: 'Home Address',
+                              labelText: 'Relationship',
                               onSaved: (value) {
                                 Provider.of<KycViewModel>(
                                   context,
                                   listen: false,
-                                ).kin.address = value!;
+                                ).kin.relationship = value!;
                               },
-                              validator: Validators.validateHomeAddress,
-                              hintText: 'Enter your home address',
+                              validator: Validators.validateRelationship,
+                              hintText: 'Choose your relationship',
+                            ),
+                            const SizedBox(height: 16),
+                            PhoneInput(
+                              onPhoneNumberChanged: (phone) {
+                                Provider.of<KycViewModel>(
+                                  context,
+                                  listen: false,
+                                ).kin.phoneNumber = phone;
+                              },
                             ),
                           ],
                         ),
@@ -81,7 +110,7 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => onProceedPressed(context),
+                        onPressed: () => onNextPressed(context),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -90,7 +119,7 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                           backgroundColor: kAppPrimaryColor,
                         ),
                         child: const Text(
-                          'Proceed',
+                          'Next',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -99,17 +128,15 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          NavigationUtils.clearStackAndHome(context);
-                        },
-                        child: const Text(
-                          'Skip',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: kAppPrimaryColor,
-                          ),
+                    TextButton(
+                      onPressed: () {
+                        NavigationUtils.clearStackAndHome(context);
+                      },
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: kAppPrimaryColor,
                         ),
                       ),
                     ),
@@ -123,37 +150,13 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
     );
   }
 
-  onProceedPressed(BuildContext context) async {
+  onNextPressed(BuildContext context) {
     final form = _formKey.currentState!;
-
     if (form.validate()) {
+      // save the data to the view model
       form.save();
 
-      showLoadingAlert(context, text: 'Uploading Next of Kin\'s Profile');
-
-      String token = Provider.of<AuthViewModel>(
-        context,
-        listen: false,
-      ).userToken!;
-
-      final response = await Provider.of<KycViewModel>(
-        context,
-        listen: false,
-      ).uploadNextOfKinDetails(token);
-
-      if (context.mounted) {
-        dismissLoader(context);
-
-        if (response.status == ResponseStatus.completed) {
-          NavigationUtils.clearStackAndHome(context);
-        } else {
-          showMessageAlert(
-            context,
-            title: 'Error occurred!',
-            body: response.message!,
-          );
-        }
-      }
+      NavigationUtils.goTo(context, NextOfKinAddressPage());
     }
   }
 }

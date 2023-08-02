@@ -1,25 +1,32 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
+import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/kyc_view_model.dart';
 
 import 'drivers_address_page.dart';
 
-class VehicleKycPage extends StatefulWidget {
-  const VehicleKycPage({Key? key}) : super(key: key);
+class VehicleImagesPage extends StatefulWidget {
+  const VehicleImagesPage({Key? key}) : super(key: key);
 
   @override
-  State<VehicleKycPage> createState() => _VehicleKycPageState();
+  State<VehicleImagesPage> createState() => _VehicleImagesPageState();
 }
 
-class _VehicleKycPageState extends State<VehicleKycPage> {
+class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
+  final PageController _controller = PageController(initialPage: 0);
+
   File? _image1;
   File? _image2;
   File? _image3;
   File? _image4;
 
-  final PageController _controller = PageController(initialPage: 0);
+  bool _goNext = true;
 
   @override
   void dispose() {
@@ -34,6 +41,9 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
 
     setState(() {
       if (pickedFile != null) {
+        setState(() {
+          _goNext = false;
+        });
         switch (imageIndex) {
           case 1:
             _image1 = File(pickedFile.path);
@@ -48,8 +58,6 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
             _image4 = File(pickedFile.path);
             break;
         }
-      } else {
-        print('No image selected.');
       }
     });
   }
@@ -69,6 +77,14 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
         case 4:
           _image4 = null;
           break;
+      }
+      if (_image1 == null &&
+          _image2 == null &&
+          _image3 == null &&
+          _image4 == null) {
+        setState(() {
+          _goNext = true;
+        });
       }
     });
   }
@@ -121,6 +137,45 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
     );
   }
 
+  void onUploadButtonPressed(BuildContext context) async {
+    List<File> files = [];
+
+    if (_image1 != null) files.add(_image1!);
+    if (_image2 != null) files.add(_image2!);
+    if (_image3 != null) files.add(_image3!);
+    if (_image4 != null) files.add(_image4!);
+
+    if (files.isNotEmpty) {
+      showLoadingAlert(context, text: 'Uploading vehicle images');
+      String token = Provider.of<AuthViewModel>(
+        context,
+        listen: false,
+      ).userToken!;
+
+      final response = await Provider.of<KycViewModel>(
+        context,
+        listen: false,
+      ).uploadVehicleImages(
+        userToken: token,
+        files: files,
+      );
+
+      if (context.mounted) {
+        dismissLoader(context);
+
+        if (response.status == ResponseStatus.completed) {
+          NavigationUtils.goTo(context, DriverAddressPage());
+        } else {
+          showMessageAlert(
+            context,
+            title: 'Error occurred',
+            body: response.message!,
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +186,7 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
             slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,
-                child:  Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
@@ -226,9 +281,10 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          NavigationUtils.goTo(context, DriverAddressPage());
-                        },
+                        onPressed: _goNext
+                            ? () => NavigationUtils.goTo(
+                                context, DriverAddressPage())
+                            : () => onUploadButtonPressed(context),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -236,9 +292,9 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: kAppPrimaryColor,
                         ),
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
+                        child: Text(
+                          _goNext ? 'Next' : 'Upload',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -246,17 +302,15 @@ class _VehicleKycPageState extends State<VehicleKycPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          NavigationUtils.clearStackAndHome(context);
-                        },
-                        child: const Text(
-                          'Skip',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: kAppPrimaryColor,
-                          ),
+                    TextButton(
+                      onPressed: () {
+                        NavigationUtils.clearStackAndHome(context);
+                      },
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: kAppPrimaryColor,
                         ),
                       ),
                     ),

@@ -67,23 +67,23 @@ mixin AlertUtils {
     );
   }
 
-  showMessageAlert(BuildContext context,
-      {required String title, required String body}) {
+  showMessageAlert(
+    BuildContext context, {
+    required String title,
+    required String body,
+  }) {
     AlertDialog alert = AlertDialog(
-      // backgroundColor: kPrimaryColor1,
+      backgroundColor: kAppSecondaryColor,
       title: Text(
         title,
-        // style: kWhiteTextStyle,
       ),
       content: Text(
         body,
-        // style: kWhiteTextStyle,
       ),
       actions: [
         TextButton(
             child: const Text(
               'OK',
-              // style: kWhiteTextStyle,
             ),
             onPressed: () {
               Navigator.pop(context);

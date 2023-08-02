@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -12,6 +14,7 @@ class UploadSingleImageLayout extends StatefulWidget {
   final String imageTitle;
   final String imageDescription;
   final Function() onNextPressed;
+  final Function(File) onUploadPressed;
 
   const UploadSingleImageLayout({
     Key? key,
@@ -20,14 +23,20 @@ class UploadSingleImageLayout extends StatefulWidget {
     required this.imageTitle,
     required this.imageDescription,
     required this.onNextPressed,
+    required this.onUploadPressed,
   }) : super(key: key);
 
   @override
-  State<UploadSingleImageLayout> createState() => _UploadSingleImageLayoutState();
+  State<UploadSingleImageLayout> createState() =>
+      _UploadSingleImageLayoutState();
 }
 
-class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout> {
+class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
+    with AlertUtils {
   late PageController _controller;
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool _goNext = true;
 
   @override
   void initState() {
@@ -41,20 +50,53 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout> {
     super.dispose();
   }
 
-  File? _image;
-  final ImagePicker _picker = ImagePicker();
-
   Future getImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    print('image selected.');
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {
-        print('image selected.');
+        // set goNext to false to enable uploading
+        // when the green button is pressed
+        _goNext = false;
       }
     });
+  }
+
+  Future<void> uploadImage(BuildContext context) async {
+    showLoadingAlert(context, text: 'Uploading image');
+
+    final response = await widget.onUploadPressed(_image!) as ApiResponse;
+
+    if (context.mounted) {
+      dismissLoader(context);
+
+      if (response.status == ResponseStatus.completed) {
+        showMessageAlert(
+          context,
+          title: 'Upload successful',
+          body: '',
+        );
+        // since uploading was successful
+        // set to true so that the user can navigate to the next page
+        setState(() {
+          _goNext = true;
+        });
+      }
+
+      if (response.status == ResponseStatus.error) {
+        showMessageAlert(
+          context,
+          title: 'Error occurred!',
+          body: response.message!,
+        );
+        // since uploading failed
+        // set to false so that the user can try uploading again
+        setState(() {
+          _goNext = false;
+        });
+      }
+    }
   }
 
   @override
@@ -169,7 +211,9 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: widget.onNextPressed,
+                        onPressed: _goNext
+                            ? widget.onNextPressed
+                            : () => uploadImage(context),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -177,7 +221,8 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout> {
                           padding: const EdgeInsets.fromLTRB(40, 19, 40, 19),
                           backgroundColor: const Color.fromRGBO(0, 110, 33, 1),
                         ),
-                        child: const Text('Next'),
+                        child:
+                            _goNext ? const Text('Next') : const Text('Upload'),
                       ),
                     ),
                     const SizedBox(height: 16),

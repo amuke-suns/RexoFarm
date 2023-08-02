@@ -5,7 +5,8 @@ import 'package:rexofarm/models/driver.dart';
 import 'package:rexofarm/models/user.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:rexofarm/models/vehicle.dart';
+
+import 'dart:async';
 
 import 'auth_api.dart';
 
@@ -31,11 +32,10 @@ class AuthApiImpl implements AuthApi {
           'password': password,
         },
       );
-
-      print(response.body);
     } catch (error) {
       apiResponse = ApiResponse.error(
-          'Please check your internet connection and try again');
+        'Please check your internet connection and try again',
+      );
       return apiResponse;
     }
 
@@ -45,8 +45,9 @@ class AuthApiImpl implements AuthApi {
       apiResponse = ApiResponse.completed(token: token);
     } else {
       // Bad request error (e.g., email or password is invalid)
-      apiResponse =
-          ApiResponse.error("Invalid email or password! Please check.");
+      apiResponse = ApiResponse.error(
+        "Invalid email or password! Please check.",
+      );
     }
 
     return apiResponse;
@@ -92,48 +93,6 @@ class AuthApiImpl implements AuthApi {
     } else {
       // general error occurred. Please try again
       apiResponse = ApiResponse.error("Error occurred! Please try again");
-    }
-
-    return apiResponse;
-  }
-
-  @override
-  Future<ApiResponse> uploadVehicleDetails(
-    String token,
-    Vehicle vehicle,
-  ) async {
-    ApiResponse apiResponse;
-    http.Response response;
-
-    String endpoint = 'v1/vehicle/create';
-
-    try {
-      response = await http.post(
-        Uri.https(_baseUrl, endpoint),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: <String, dynamic>{
-          "vehicleType": vehicle.type,
-          "vehicleMake": vehicle.make,
-          "vehicleModel": vehicle.model,
-          "numberPlate": vehicle.numberPlate,
-        },
-      );
-
-      print(response.body);
-    } catch (error) {
-      apiResponse = ApiResponse.error(
-          'Please check your internet connection and try again');
-      return apiResponse;
-    }
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      apiResponse = ApiResponse.completed(token: token);
-    } else {
-      apiResponse = ApiResponse.error(
-        "Error occurred while uploading! Please try again",
-      );
     }
 
     return apiResponse;

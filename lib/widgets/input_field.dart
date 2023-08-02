@@ -4,7 +4,6 @@ class InputField extends StatefulWidget {
   final String labelText;
   final String? hintText;
   final Function(String?)? onSaved;
-  final TextEditingController? controller;
   final String? Function(String?) validator;
   final bool obscureText;
   final bool showToggle;
@@ -14,8 +13,7 @@ class InputField extends StatefulWidget {
     required this.labelText,
     required this.hintText,
     required this.validator,
-    this.onSaved,
-    this.controller,
+    required this.onSaved,
     this.obscureText = false,
     this.showToggle = false,
   }) : super(key: key);

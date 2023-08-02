@@ -4,6 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:rexofarm/utilities/constants.dart';
 
 mixin AlertUtils {
+  Future<bool> showConfirmationDialog(BuildContext context) async {
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Do you want to exit the app?'),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+    return shouldPop!;
+  }
+
   showLoadingAlert(BuildContext context, {required String text}) {
     Dialog alert = Dialog(
       backgroundColor: kAppSecondaryColor,
@@ -40,23 +67,23 @@ mixin AlertUtils {
     );
   }
 
-  showMessageAlert(BuildContext context,
-      {required String title, required String body}) {
+  showMessageAlert(
+    BuildContext context, {
+    required String title,
+    required String body,
+  }) {
     AlertDialog alert = AlertDialog(
-      // backgroundColor: kPrimaryColor1,
+      backgroundColor: kAppSecondaryColor,
       title: Text(
         title,
-        // style: kWhiteTextStyle,
       ),
       content: Text(
         body,
-        // style: kWhiteTextStyle,
       ),
       actions: [
         TextButton(
             child: const Text(
               'OK',
-              // style: kWhiteTextStyle,
             ),
             onPressed: () {
               Navigator.pop(context);

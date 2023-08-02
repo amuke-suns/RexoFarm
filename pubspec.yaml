@@ -24,6 +24,11 @@ dependencies:
   flutter_svg: ^2.0.7
   shared_preferences: ^2.2.0
   provider: ^6.0.5
+  percent_indicator: ^4.2.3
+  auto_size_text: ^3.0.0
+  intl: ^0.18.1
+  shimmer: ^3.0.0
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
@@ -36,19 +41,22 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - assets/
     - images/onboarding/
+    - images/assets/
+    - images/profile/
 
   fonts:
     - family: Quicksand
       fonts:
-        - asset: assets/Quicksand-Regular.ttf
-        - asset: assets/Quicksand-Bold.ttf
+        - asset: fonts/Quicksand-Regular.ttf
+        - asset: fonts/Quicksand-Bold.ttf
           weight: 700
-        - asset: assets/Quicksand-Medium.ttf
+        - asset: fonts/Quicksand-Medium.ttf
           weight: 500
-        - asset: assets/Quicksand-SemiBold.ttf
+        - asset: fonts/Quicksand-SemiBold.ttf
           weight: 600
-        - asset: assets/Quicksand-Light.ttf
+        - asset: fonts/Quicksand-Light.ttf
           weight: 300
 
 

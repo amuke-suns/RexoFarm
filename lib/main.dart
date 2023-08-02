@@ -5,6 +5,7 @@ import 'package:rexofarm/screens/onboarding/onboarding_page.dart';
 import 'package:rexofarm/services/storage/storage_service.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/kyc_view_model.dart';
 
 
 void main() async {
@@ -41,6 +42,7 @@ class RexoFarmApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => KycViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

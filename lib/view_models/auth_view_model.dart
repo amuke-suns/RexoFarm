@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:rexofarm/models/api_response.dart';
 import 'package:rexofarm/models/driver.dart';
 import 'package:rexofarm/models/user.dart';
+import 'package:rexofarm/services/storage/secure_storage.dart';
 
 import '../services/web_api/auth_api_impl.dart';
 
@@ -51,11 +50,16 @@ class AuthViewModel extends ChangeNotifier {
 
     _userToken = response.token;
 
+    if (_userToken != null) {
+      // persist user token for future logging in
+      SecureStorage().persistUserToken(_userToken!);
+    }
+
     return response;
   }
 
-  Future<void> getUser() async {
-    final response = await AuthApiImpl().getUser(userToken!);
+  Future<void> getUser(String token) async {
+    final response = await AuthApiImpl().getUser(token);
 
     _driver = response.data as Driver;
 

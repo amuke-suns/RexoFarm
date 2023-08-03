@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
                             const SizedBox(height: 40),
                             MainPageButton(
                               label: "Log in",
-                              onPressed: _loginButtonPressed,
+                              onPressed: () => _loginButtonPressed(context),
                             ),
                           ],
                         ),
@@ -131,20 +131,24 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
     );
   }
 
-  void _loginButtonPressed() async {
+  void _loginButtonPressed(BuildContext context) async {
     final form = _formKey.currentState!;
     if (form.validate()) {
       form.save();
       showLoadingAlert(context, text: 'Logging in');
 
-      final response =
-          await Provider.of<AuthViewModel>(context, listen: false).loginUser();
+      final response = await Provider.of<AuthViewModel>(
+        context,
+        listen: false,
+      ).loginUser();
 
-      handleResponse(response);
+      if (context.mounted) {
+        handleResponse(context, response);
+      }
     }
   }
 
-  void handleResponse(ApiResponse response) {
+  void handleResponse(BuildContext context, ApiResponse response) {
     dismissLoader(context);
     if (response.status == ResponseStatus.completed) {
       // Clear the navigation stack and go to the KYC page

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/shipment_mock.dart';
+import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/shipment_card.dart';
 import 'package:rexofarm/widgets/profile_completeness_card.dart';
 import 'package:rexofarm/widgets/see_more_button.dart';
@@ -14,7 +16,7 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage> with AlertUtils {
   void onWithdrawButtonPressed() {
     // Add your desired functionality when the withdraw button is pressed
     print('Withdraw button pressed');
@@ -39,7 +41,19 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              showLoadingAlert(context, text: 'Mocking');
+
+              print('hello');
+              final response = await Provider.of<HomeViewModel>(
+                context,
+                listen: false,
+              ).mockPlaceOrder();
+              print('hi');
+              if (context.mounted) {
+                dismissLoader(context);
+              }
+            },
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Image.asset(

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rexofarm/screens/auth/login_page.dart';
+import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
+import 'package:rexofarm/utilities/navigation_utils.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/profile_extra_card.dart';
 import 'package:rexofarm/widgets/profile_setting_tile.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatelessWidget with AlertUtils {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
@@ -59,8 +64,7 @@ class ProfilePage extends StatelessWidget {
                     child: ProfileExtraCard(
                       widgetTitle: Text(
                         '17',
-                        style: TextStyle(
-                            color: Colors.black, fontSize: 16),
+                        style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                       description: 'Completed Shipments',
                     ),
@@ -72,8 +76,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Text(
                             '4.5',
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 16),
+                            style: TextStyle(color: Colors.black, fontSize: 16),
                           ),
                           Icon(
                             Icons.star,
@@ -174,7 +177,21 @@ class ProfilePage extends StatelessWidget {
                 fileName: 'logout.png',
                 title: 'Logout',
                 color: kDeepRed,
-                onPressed: () {},
+                onPressed: () async {
+                  showLoadingAlert(context, text: 'Logging out');
+                  await Provider.of<HomeViewModel>(
+                    context,
+                    listen: false,
+                  ).logout();
+                  if (context.mounted) {
+                    dismissLoader(context);
+
+                    NavigationUtils.clearStackAndGoTo(
+                      context,
+                      const LoginPage(),
+                    );
+                  }
+                },
               ),
             ],
           ),

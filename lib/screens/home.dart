@@ -4,10 +4,16 @@ import 'package:rexofarm/navigators/home_tab_navigator.dart';
 import 'package:rexofarm/navigators/tab_item.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final String token;
+
+  const Home({
+    Key? key,
+    required this.token,
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -30,7 +36,7 @@ class _HomeState extends State<Home> with AlertUtils {
 
   @override
   void initState() {
-    Provider.of<AuthViewModel>(context, listen: false).getUser();
+    Provider.of<AuthViewModel>(context, listen: false).getUser(widget.token);
     super.initState();
   }
 
@@ -48,11 +54,18 @@ class _HomeState extends State<Home> with AlertUtils {
       },
       child: Scaffold(
         body: SafeArea(
-          child: Stack(children: [
-            _buildOffstageNavigator(TabItem.dashboard),
-            _buildOffstageNavigator(TabItem.shipment),
-            _buildOffstageNavigator(TabItem.profile),
-          ]),
+          child: ChangeNotifierProvider(
+            create: (_) {
+              return HomeViewModel(
+                token: widget.token,
+              );
+            },
+            child: Stack(children: [
+              _buildOffstageNavigator(TabItem.dashboard),
+              _buildOffstageNavigator(TabItem.shipment),
+              _buildOffstageNavigator(TabItem.profile),
+            ]),
+          ),
         ),
         bottomNavigationBar: CustomBottomNavBar(
           currentIndex: _currentTab.index,

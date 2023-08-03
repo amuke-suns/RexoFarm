@@ -119,6 +119,8 @@ class AuthApiImpl implements AuthApi {
       return apiResponse;
     }
 
+    print(response.body);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       final json = jsonDecode(response.body);
       final driver = Driver.fromJson(json, token);

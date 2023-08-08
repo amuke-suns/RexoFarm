@@ -1,4 +1,4 @@
-import '../widgets/shipment_card.dart';
+import 'package:rexofarm/models/delivery_status.dart';
 
 class ShipmentsMock {
   List<Shipment> list;
@@ -14,7 +14,7 @@ class ShipmentsMock {
             (json) => Shipment(
               name: json['name'],
               address: json['address'],
-              status: ShipmentStatus.values[json['status']],
+              status: DeliveryStatus.values[json['status']],
               date: DateTime.parse(json['date']),
             ),
           )
@@ -25,21 +25,21 @@ class ShipmentsMock {
 
 extension ShipmentExtensions on List<Shipment> {
   List<Shipment> getLatest() {
-    return where((element) => element.status == ShipmentStatus.latest).toList();
+    return where((element) => element.status == DeliveryStatus.unassigned).toList();
   }
 
   List<Shipment> getAccepted() {
-    return where((element) => element.status == ShipmentStatus.accepted)
+    return where((element) => element.status == DeliveryStatus.assigned)
         .toList();
   }
 
   List<Shipment> getCompleted() {
-    return where((element) => element.status == ShipmentStatus.completed)
+    return where((element) => element.status == DeliveryStatus.delivered)
         .toList();
   }
 
   List<Shipment> getOngoing() {
-    return where((element) => element.status == ShipmentStatus.ongoing)
+    return where((element) => element.status == DeliveryStatus.ongoing)
         .toList();
   }
 
@@ -66,7 +66,7 @@ extension ShipmentExtensions on List<Shipment> {
 class Shipment {
   final String name;
   final String address;
-  final ShipmentStatus status;
+  final DeliveryStatus status;
   final DateTime date;
 
   Shipment({

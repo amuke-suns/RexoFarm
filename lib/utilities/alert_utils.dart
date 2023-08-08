@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rexofarm/utilities/constants.dart';
 
+enum AlertType {
+  success,
+  error,
+}
+
 mixin AlertUtils {
   Future<bool> showConfirmationDialog(BuildContext context) async {
     final shouldPop = await showDialog<bool>(
@@ -29,6 +34,24 @@ mixin AlertUtils {
       },
     );
     return shouldPop!;
+  }
+
+  showInfoSnackBar(
+    BuildContext context, {
+    required String description,
+    required AlertType type,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        padding: EdgeInsets.zero,
+        backgroundColor:
+            type == AlertType.success ? kAppSecondaryColor : Colors.redAccent.shade100,
+        content: ListTile(
+          leading: type == AlertType.success ? kSuccessIcon : kErrorIcon,
+          title: Text(description),
+        ),
+      ),
+    );
   }
 
   showLoadingAlert(BuildContext context, {required String text}) {
@@ -101,5 +124,7 @@ mixin AlertUtils {
     );
   }
 
-  void dismissLoader(BuildContext context) => Navigator.pop(context);
+  void dismissLoader(BuildContext context, {bool rootNavigator = false}) {
+    Navigator.of(context, rootNavigator: rootNavigator).pop();
+  }
 }

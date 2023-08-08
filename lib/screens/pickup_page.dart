@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:rexofarm/models/shipment_mock.dart';
-import 'package:rexofarm/services/web_api/mock_api.dart';
+import 'package:provider/provider.dart';
+import 'package:rexofarm/models/pickup_requests.dart';
 import 'package:rexofarm/utilities/constants.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
+import 'package:rexofarm/widgets/delivery_card.dart';
 import 'package:rexofarm/widgets/shimmer_widget.dart';
-import 'package:rexofarm/widgets/shipments_list_builder.dart';
 
-class ShipmentPage extends StatefulWidget {
-  const ShipmentPage({Key? key}) : super(key: key);
+class PickupPage extends StatefulWidget {
+  const PickupPage({Key? key}) : super(key: key);
 
   @override
-  State<ShipmentPage> createState() => _ShipmentPageState();
+  State<PickupPage> createState() => _PickupPageState();
 }
 
-class _ShipmentPageState extends State<ShipmentPage> {
+class _PickupPageState extends State<PickupPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Shipment',
-          ),
+          title: const Text('Pickup Requests'),
           centerTitle: true,
           bottom: const TabBar(
             labelColor: kAppPrimaryColor,
@@ -31,7 +30,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
             tabs: [
               Padding(
                 padding: EdgeInsets.only(bottom: 8.0),
-                child: Text('New Shipments'),
+                child: Text('New Requests'),
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 8.0),
@@ -48,19 +47,33 @@ class _ShipmentPageState extends State<ShipmentPage> {
             ],
           ),
         ),
-        body: FutureBuilder<List<Shipment>>(
-            future: MockApi().getMockShipments(),
+        body: FutureBuilder<List<PickupRequest>>(
+            future: Provider.of<HomeViewModel>(
+              context,
+              listen: false,
+            ).getPickupRequests(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                final data = snapshot.data!;
+                final data = snapshot.data ?? [];
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TabBarView(
                     children: [
-                      ShipmentsListBuilder(data: data.getLatest()),
-                      ShipmentsListBuilder(data: data.getAccepted()),
-                      ShipmentsListBuilder(data: data.getCompleted()),
-                      ShipmentsListBuilder(data: data.getOngoing()),
+                      ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return DeliveryCard(pickupRequest: data[index]);
+                        },
+                      ),
+                      const Center(
+                        child: Text('No accepted requests yet'),
+                      ),
+                      const Center(
+                        child: Text('No completed requests yet'),
+                      ),
+                      const Center(
+                        child: Text('No ongoing requests yet'),
+                      ),
                     ],
                   ),
                 );

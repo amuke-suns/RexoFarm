@@ -36,7 +36,7 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
   late PageController _controller;
   File? _image;
   final ImagePicker _picker = ImagePicker();
-  bool _goNext = true;
+  bool _isImageSet = false;
 
   @override
   void initState() {
@@ -56,9 +56,7 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        // set goNext to false to enable uploading
-        // when the green button is pressed
-        _goNext = false;
+        _isImageSet = true;
       }
     });
   }
@@ -72,29 +70,20 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
       dismissLoader(context);
 
       if (response.status == ResponseStatus.completed) {
-        showMessageAlert(
+        showInfoSnackBar(
           context,
-          title: 'Upload successful',
-          body: '',
+          description: 'Upload Successful',
+          type: AlertType.success,
         );
-        // since uploading was successful
-        // set to true so that the user can navigate to the next page
-        setState(() {
-          _goNext = true;
-        });
+        widget.onNextPressed();
       }
 
       if (response.status == ResponseStatus.error) {
-        showMessageAlert(
+        showInfoSnackBar(
           context,
-          title: 'Error occurred!',
-          body: response.message!,
+          description: response.message!,
+          type: AlertType.error,
         );
-        // since uploading failed
-        // set to false so that the user can try uploading again
-        setState(() {
-          _goNext = false;
-        });
       }
     }
   }
@@ -211,9 +200,8 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _goNext
-                            ? widget.onNextPressed
-                            : () => uploadImage(context),
+                        onPressed:
+                            _isImageSet ? () => uploadImage(context) : () => widget.onNextPressed(),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -221,8 +209,7 @@ class _UploadSingleImageLayoutState extends State<UploadSingleImageLayout>
                           padding: const EdgeInsets.fromLTRB(40, 19, 40, 19),
                           backgroundColor: const Color.fromRGBO(0, 110, 33, 1),
                         ),
-                        child:
-                            _goNext ? const Text('Next') : const Text('Upload'),
+                        child: const Text('Upload'),
                       ),
                     ),
                     const SizedBox(height: 16),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rexofarm/screens/home.dart';
+import 'package:rexofarm/view_models/auth_view_model.dart';
 
 class NavigationUtils {
   static goTo(BuildContext context, Widget destination) {
@@ -30,6 +32,14 @@ class NavigationUtils {
   }
 
   static clearStackAndHome(BuildContext context) {
-    clearStackAndGoTo(context, const Home());
+    // this method is called during the KYC uploading
+    // which is after a successful login
+    // that is, the userToken will be set in the AuthViewModel already
+    String token = Provider.of<AuthViewModel>(
+      context,
+      listen: false,
+    ).userToken!;
+
+    clearStackAndGoTo(context, Home(token: token));
   }
 }

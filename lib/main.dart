@@ -7,6 +7,7 @@ import 'package:rexofarm/services/storage/secure_storage.dart';
 import 'package:rexofarm/services/storage/storage_service.dart';
 import 'package:rexofarm/theme.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/view_models/kyc_view_model.dart';
 
 void main() async {
@@ -44,6 +45,7 @@ class RexoFarmApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => KycViewModel()),
+        ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -56,7 +58,6 @@ class RexoFarmApp extends StatelessWidget {
                 builder: (_, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     String? token = snapshot.data;
-                    print(token);
                     if (token == null) {
                       return const CreateAccountPage();
                     } else {

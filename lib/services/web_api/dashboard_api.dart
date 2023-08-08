@@ -1,5 +1,4 @@
 import 'package:rexofarm/models/api_response.dart';
-import 'package:http/http.dart' as http;
 
 class Order {
   String orderId = '';
@@ -22,42 +21,15 @@ abstract class DashboardApi {
     required String token,
     required Order order,
   });
-}
 
-class DashboardApiImpl implements DashboardApi {
-  final String _baseUrl = 'rexofarm-logistics-api.onrender.com';
+  Future<ApiResponse> getUser(String token);
 
-  @override
-  Future<void> mockPlaceOrder({
+  Future<ApiResponse> getPickupRequests(String token);
+
+  Future<ApiResponse> getParticularRequest(String token, String id);
+
+  Future<ApiResponse> acceptPickupRequest({
     required String token,
-    required Order order,
-  }) async {
-    ApiResponse apiResponse;
-    http.Response response;
-
-    String endpoint = 'v1/delivery/mock-place-orders';
-
-    try {
-      response = await http.post(
-        Uri.https(_baseUrl, endpoint),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-        body: <String, dynamic>{
-          "orderId": order.orderId,
-          "pickupLocation": order.pickupLocation,
-          "destination": order.destination,
-          "buyer": order.buyer,
-          "seller": order.seller,
-        },
-      );
-
-      print(response.body);
-    } catch (error) {
-      print(error);
-      apiResponse = ApiResponse.error(
-        'Please check your internet connection and try again',
-      );
-    }
-  }
+    required String pickupId,
+  });
 }

@@ -97,40 +97,4 @@ class AuthApiImpl implements AuthApi {
 
     return apiResponse;
   }
-
-  @override
-  Future<ApiResponse> getUser(String token) async {
-    ApiResponse apiResponse;
-    http.Response response;
-
-    String endpoint = 'v1/auth/fetch-me';
-
-    try {
-      response = await http.get(
-        Uri.https(_baseUrl, endpoint),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        },
-      );
-    } catch (error) {
-      apiResponse = ApiResponse.error(
-        'Please check your internet connection and try again',
-      );
-      return apiResponse;
-    }
-
-    print(response.body);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final json = jsonDecode(response.body);
-      final driver = Driver.fromJson(json, token);
-      apiResponse = ApiResponse.completedWithData(data: driver);
-    } else {
-      apiResponse = ApiResponse.error(
-        "Error occurred while uploading! Please try again",
-      );
-    }
-
-    return apiResponse;
-  }
 }

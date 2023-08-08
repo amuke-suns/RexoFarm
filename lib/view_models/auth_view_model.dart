@@ -7,8 +7,6 @@ import 'package:rexofarm/services/storage/secure_storage.dart';
 import '../services/web_api/auth_api_impl.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  Driver? _driver;
-  Driver? get driver => _driver;
 
   String? _userToken;
 
@@ -56,13 +54,5 @@ class AuthViewModel extends ChangeNotifier {
     }
 
     return response;
-  }
-
-  Future<void> getUser(String token) async {
-    final response = await AuthApiImpl().getUser(token);
-
-    _driver = response.data as Driver;
-
-    notifyListeners();
   }
 }

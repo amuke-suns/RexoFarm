@@ -28,7 +28,7 @@ class Driver {
       roles: (data["roles"] as List).map((item) => item as String).toList(),
       email: data["email"],
       firstName: data['driver']['firstName'],
-      lastName: data['driver']['firstName'],
+      lastName: data['driver']['lastName'],
       phone: data['driver']['phone'],
       verified: data['verified'],
     );

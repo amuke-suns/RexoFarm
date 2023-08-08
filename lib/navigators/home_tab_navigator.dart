@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rexofarm/navigators/tab_item.dart';
 import 'package:rexofarm/screens/dashboard_page.dart';
 import 'package:rexofarm/screens/profile_page.dart';
-import 'package:rexofarm/screens/shipment_page.dart';
+import 'package:rexofarm/screens/pickup_page.dart';
 
 
 class HomeTabNavigator extends StatelessWidget {
@@ -27,7 +27,7 @@ class HomeTabNavigator extends StatelessWidget {
               case TabItem.dashboard:
                 return const DashboardPage();
               case TabItem.shipment:
-                return const ShipmentPage();
+                return const PickupPage();
               case TabItem.profile:
                 return const ProfilePage();
             }

@@ -13,6 +13,8 @@ class ProfilePage extends StatelessWidget with AlertUtils {
 
   @override
   Widget build(BuildContext context) {
+    final driver = Provider.of<HomeViewModel>(context, listen: true).driver;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -37,9 +39,9 @@ class ProfilePage extends StatelessWidget with AlertUtils {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Row(
+              Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 39,
                     child: Icon(
                       Icons.person,
@@ -49,10 +51,10 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                   Expanded(
                     child: ListTile(
                       title: Text(
-                        'Amuke Sunday',
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        '${driver?.firstName} ${driver?.lastName}' ?? "No name",
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      subtitle: Text('Driver'),
+                      subtitle: const Text('Driver'),
                     ),
                   ),
                 ],

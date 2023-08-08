@@ -16,6 +16,12 @@ class KycViewModel extends ChangeNotifier {
 
   NextOfKin kin = NextOfKin();
 
+  File? _frontLicense;
+  File? _backLicense;
+
+  set frontLicense(File file) => _frontLicense = file;
+  set backLicense(File file) => _backLicense = file;
+
   Future<ApiResponse> uploadNinImage({
     required File file,
     required String token,
@@ -47,6 +53,18 @@ class KycViewModel extends ChangeNotifier {
       token: userToken,
       vehicleId: _id!,
       files: files,
+    );
+  }
+
+  Future<ApiResponse> uploadLicenseImages({
+    required String userToken,
+    required File backLicenseImage,
+  }) async {
+    _backLicense = backLicenseImage;
+
+    return KycApiImpl().uploadLicenseImages(
+      token: userToken,
+      files: [_frontLicense!, _backLicense!],
     );
   }
 

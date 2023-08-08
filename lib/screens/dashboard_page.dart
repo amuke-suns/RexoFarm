@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rexofarm/models/delivery_status.dart';
 import 'package:rexofarm/models/shipment_mock.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
-import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/shipment_card.dart';
 import 'package:rexofarm/widgets/profile_completeness_card.dart';
@@ -26,10 +26,14 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
     // Add your desired functionality when the see more button is pressed
     print('See more button pressed');
   }
+  @override
+  void initState() {
+    Provider.of<HomeViewModel>(context, listen: false).getUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthViewModel>(context, listen: true);
     final dateNow = DateTime.now();
     final dateYesterday = dateNow.subtract(const Duration(days: 1));
 
@@ -37,22 +41,24 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          'Hello ${provider.driver?.firstName ?? ''}',
+          'Hello ${Provider.of<HomeViewModel>(
+                context,
+                listen: true,
+              ).driver?.firstName ?? ''}',
         ),
         actions: [
           GestureDetector(
             onTap: () async {
-              showLoadingAlert(context, text: 'Mocking');
+              /*showLoadingAlert(context, text: 'Mocking');
 
-              print('hello');
               final response = await Provider.of<HomeViewModel>(
                 context,
                 listen: false,
               ).mockPlaceOrder();
-              print('hi');
+
               if (context.mounted) {
                 dismissLoader(context);
-              }
+              }*/
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
@@ -66,8 +72,8 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
         ],
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 18, 0),
+      body: const Padding(
+        padding: EdgeInsets.fromLTRB(16, 8, 18, 0),
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(
@@ -75,15 +81,15 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const WalletCard(),
-                        const SizedBox(height: 10),
-                        const ProfileCompletenessCard(percentage: 83),
-                        const Padding(
+                        WalletCard(),
+                        SizedBox(height: 10),
+                        ProfileCompletenessCard(percentage: 0),
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 16),
                           child: Text(
                             'Recent Shipments',
@@ -95,7 +101,12 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                             ),
                           ),
                         ),
-                        const Text(
+                        Expanded(
+                          child: Center(
+                            child: Text('No shipments yet'),
+                          ),
+                        ),
+                        /*const Text(
                           'Today',
                           style: TextStyle(
                             fontSize: 12,
@@ -108,16 +119,15 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                           shipment: Shipment(
                             name: 'Fish',
                             address: 'CMD road, Magodo, Lagos',
-                            status: ShipmentStatus.completed,
+                            status: DeliveryStatus.delivered,
                             date: dateNow,
                           ),
                         ),
-
                         ShipmentCard(
                           shipment: Shipment(
                             name: 'Vegetables',
                             address: 'Chevron road, Lekki, Lagos',
-                            status: ShipmentStatus.ongoing,
+                            status: DeliveryStatus.ongoing,
                             date: DateTime.now(),
                           ),
                         ),
@@ -137,7 +147,7 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                               shipment: Shipment(
                                 name: 'Plantains',
                                 address: 'Allen Avenue, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
@@ -145,29 +155,28 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                               shipment: Shipment(
                                 name: 'Vegetables',
                                 address: 'Alausa, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
-
                             ShipmentCard(
                               shipment: Shipment(
                                 name: 'Grapes',
                                 address: 'Alausa, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
                           ],
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
-                  Center(
+                  /*Center(
                     child: SeeMoreButton(
                       onPressed: seeMoreButtonPressed,
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             )

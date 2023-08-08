@@ -28,7 +28,7 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.local_shipping),
-          label: 'Shipments',
+          label: 'Pickup',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

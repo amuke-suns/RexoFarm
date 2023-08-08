@@ -36,7 +36,10 @@ class _HomeState extends State<Home> with AlertUtils {
 
   @override
   void initState() {
-    Provider.of<AuthViewModel>(context, listen: false).getUser(widget.token);
+    Provider.of<HomeViewModel>(
+      context,
+      listen: false,
+    ).token = widget.token;
     super.initState();
   }
 
@@ -54,18 +57,11 @@ class _HomeState extends State<Home> with AlertUtils {
       },
       child: Scaffold(
         body: SafeArea(
-          child: ChangeNotifierProvider(
-            create: (_) {
-              return HomeViewModel(
-                token: widget.token,
-              );
-            },
-            child: Stack(children: [
-              _buildOffstageNavigator(TabItem.dashboard),
-              _buildOffstageNavigator(TabItem.shipment),
-              _buildOffstageNavigator(TabItem.profile),
-            ]),
-          ),
+          child: Stack(children: [
+            _buildOffstageNavigator(TabItem.dashboard),
+            _buildOffstageNavigator(TabItem.shipment),
+            _buildOffstageNavigator(TabItem.profile),
+          ]),
         ),
         bottomNavigationBar: CustomBottomNavBar(
           currentIndex: _currentTab.index,

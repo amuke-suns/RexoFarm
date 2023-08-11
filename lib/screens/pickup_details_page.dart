@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/models/delivery_status.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
@@ -96,6 +97,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                       ],
                     ),
                   ),
+                  pickupRequest.delivery.status != DeliveryStatus.assigned ?
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Row(
@@ -132,7 +134,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                         )
                       ],
                     ),
-                  ),
+                  ) : const SizedBox(),
                 ],
               ),
             )

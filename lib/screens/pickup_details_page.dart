@@ -70,11 +70,11 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                           header: 'Delivery location',
                           text: delivery.pickupLocation,
                         ),
-                        const DoubleTextsWithHeaders(
+                        DoubleTextsWithHeaders(
                           firstHeader: 'Order Item',
-                          firstText: '1',
+                          firstText: delivery.items.first.item,
                           secondHeader: 'Quantity',
-                          secondText: '4',
+                          secondText: delivery.items.first.quantity.toString(),
                         ),
                         TextWithHeader(
                           header: 'Status',
@@ -159,7 +159,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
             description: 'Accepted successfully',
             type: AlertType.success,
         );
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       } else {
         showInfoSnackBar(
             context,

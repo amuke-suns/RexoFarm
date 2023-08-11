@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 enum DeliveryStatus {
   // unassigned, assigned, ongoing, delivered
   unassigned(
-    text: 'New',
+    text: 'Unassigned',
     color: Color(0xFF527E84),
     value: 'unassigned',
   ),

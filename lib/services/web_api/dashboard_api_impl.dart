@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:rexofarm/models/accepted_deliveries.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
 import 'package:rexofarm/services/web_api/dashboard_api.dart';
 import 'package:http/http.dart' as http;
@@ -147,6 +148,41 @@ class DashboardApiImpl implements DashboardApi {
       print('Error: ${response.body}');
       final json = jsonDecode(response.body);
       apiResponse = ApiResponse.error(json["message"]);
+    }
+
+    return apiResponse;
+  }
+
+  @override
+  Future<ApiResponse> fetchAcceptedRequest(String token) async {
+    ApiResponse apiResponse;
+    http.Response response;
+
+    String endpoint = '/v1/delivery/fetch';
+
+    try {
+      response = await http.get(
+        Uri.https(_baseUrl, endpoint),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+      );
+    } catch (error) {
+      apiResponse = ApiResponse.error(
+        'Please check your internet connection and try again',
+      );
+      return apiResponse;
+    }
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final json = jsonDecode(response.body);
+      final acceptedDeliveries = AcceptedDeliveries.fromJson(json);
+
+      apiResponse = ApiResponse.completedWithData(data: acceptedDeliveries);
+    } else {
+      apiResponse = ApiResponse.error(
+        "Error occurred while uploading! Please try again",
+      );
     }
 
     return apiResponse;

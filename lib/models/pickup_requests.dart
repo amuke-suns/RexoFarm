@@ -1,4 +1,6 @@
-import 'package:rexofarm/models/delivery.dart';
+import 'dart:convert';
+
+import 'package:rexofarm/models/accepted_deliveries.dart';
 
 class PickupRequests {
   final List<PickupRequest> list;
@@ -18,7 +20,7 @@ class PickupRequest {
   final String driverId;
   final String vehicleId;
   final String orderId;
-  final Delivery delivery;
+  final ParticularDelivery delivery;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -34,13 +36,14 @@ class PickupRequest {
   });
 
   factory PickupRequest.fromJson(Map<String, dynamic> json) {
+    print(jsonEncode(json));
     return PickupRequest(
       id: json['_id'],
       status: json['status'],
       driverId: json['driver'],
       vehicleId: json['vehicle'],
       orderId: json['orderId'],
-      delivery: Delivery.fromJson(json['delivery']),
+      delivery: ParticularDelivery.fromJson(json['delivery']),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

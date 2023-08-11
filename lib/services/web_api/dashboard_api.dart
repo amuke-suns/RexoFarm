@@ -26,6 +26,8 @@ abstract class DashboardApi {
 
   Future<ApiResponse> getPickupRequests(String token);
 
+  Future<ApiResponse> fetchAcceptedRequest(String token);
+
   Future<ApiResponse> getParticularRequest(String token, String id);
 
   Future<ApiResponse> acceptPickupRequest({

@@ -4,6 +4,7 @@ import 'package:rexofarm/models/delivery_status.dart';
 import 'package:rexofarm/models/shipment_mock.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
+import 'package:rexofarm/widgets/shimmer_widget.dart';
 import 'package:rexofarm/widgets/shipment_card.dart';
 import 'package:rexofarm/widgets/profile_completeness_card.dart';
 import 'package:rexofarm/widgets/see_more_button.dart';
@@ -26,6 +27,7 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
     // Add your desired functionality when the see more button is pressed
     print('See more button pressed');
   }
+
   @override
   void initState() {
     Provider.of<HomeViewModel>(context, listen: false).getUser();
@@ -34,6 +36,10 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<HomeViewModel>(
+      context,
+      listen: true,
+    );
     final dateNow = DateTime.now();
     final dateYesterday = dateNow.subtract(const Duration(days: 1));
 
@@ -41,25 +47,11 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          'Hello ${Provider.of<HomeViewModel>(
-                context,
-                listen: true,
-              ).driver?.firstName ?? ''}',
+          'Hello ${provider.driver?.firstName ?? ''}',
         ),
         actions: [
           GestureDetector(
-            onTap: () async {
-              /*showLoadingAlert(context, text: 'Mocking');
-
-              final response = await Provider.of<HomeViewModel>(
-                context,
-                listen: false,
-              ).mockPlaceOrder();
-
-              if (context.mounted) {
-                dismissLoader(context);
-              }*/
-            },
+            onTap: () async {},
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Image.asset(
@@ -72,9 +64,9 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
         ],
         elevation: 0,
       ),
-      body: const Padding(
-        padding: EdgeInsets.fromLTRB(16, 8, 18, 0),
-        child: CustomScrollView(
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 18, 0),
+        child: provider.isGettingUser ? const ShimmerWidget(type: ShimmerType.dashboard) : const CustomScrollView(
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,

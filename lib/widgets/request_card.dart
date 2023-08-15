@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
 import 'package:rexofarm/screens/pickup_details_page.dart';
 
-class DeliveryCard extends StatelessWidget {
+class RequestCard extends StatelessWidget {
   final PickupRequest pickupRequest;
+  final Function() onTap;
 
-  const DeliveryCard({
+  const RequestCard({
     Key? key,
     required this.pickupRequest,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -15,11 +17,7 @@ class DeliveryCard extends StatelessWidget {
     final delivery = pickupRequest.delivery;
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return PickupDetailsPage(pickupRequest: pickupRequest);
-        }));
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
         padding: const EdgeInsets.fromLTRB(8, 9, 8, 9),
@@ -56,7 +54,7 @@ class DeliveryCard extends StatelessWidget {
               ],
             ),
             Text(
-              delivery.status.value,
+              delivery.status.text,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,

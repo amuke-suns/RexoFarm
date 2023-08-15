@@ -13,9 +13,11 @@ import 'package:rexofarm/view_models/kyc_view_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  Future<bool> onBoardingFuture = StorageServiceImpl().showOnBoarding();
+
   runApp(
     FutureBuilder<bool>(
-      future: StorageServiceImpl().showOnBoarding(),
+      future: onBoardingFuture,
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return RexoFarmApp(showOnBoarding: snapshot.data!);
@@ -33,8 +35,9 @@ void main() async {
 
 class RexoFarmApp extends StatelessWidget {
   final bool showOnBoarding;
+  final Future<String?> tokenFuture = SecureStorage().getActiveUserToken();
 
-  const RexoFarmApp({
+  RexoFarmApp({
     super.key,
     required this.showOnBoarding,
   });
@@ -54,13 +57,14 @@ class RexoFarmApp extends StatelessWidget {
         home: showOnBoarding
             ? const OnBoardingScreen()
             : FutureBuilder<String?>(
-                future: SecureStorage().getActiveUserToken(),
+                future: tokenFuture,
                 builder: (_, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     String? token = snapshot.data;
                     if (token == null) {
                       return const CreateAccountPage();
                     } else {
+                      print(token);
                       return Home(token: token);
                     }
                   } else {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/models/delivery_status.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
@@ -70,11 +71,11 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                           header: 'Delivery location',
                           text: delivery.pickupLocation,
                         ),
-                        const DoubleTextsWithHeaders(
+                        DoubleTextsWithHeaders(
                           firstHeader: 'Order Item',
-                          firstText: '1',
+                          firstText: delivery.items.first.item,
                           secondHeader: 'Quantity',
-                          secondText: '4',
+                          secondText: delivery.items.first.quantity.toString(),
                         ),
                         TextWithHeader(
                           header: 'Status',
@@ -96,6 +97,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                       ],
                     ),
                   ),
+                  pickupRequest.delivery.status != DeliveryStatus.assigned ?
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Row(
@@ -132,7 +134,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
                         )
                       ],
                     ),
-                  ),
+                  ) : const SizedBox(),
                 ],
               ),
             )
@@ -159,7 +161,7 @@ class PickupDetailsPage extends StatelessWidget with AlertUtils {
             description: 'Accepted successfully',
             type: AlertType.success,
         );
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       } else {
         showInfoSnackBar(
             context,

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:rexofarm/models/accepted_deliveries.dart';
 import 'package:rexofarm/models/api_response.dart';
 import 'package:rexofarm/models/driver.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
@@ -9,8 +10,11 @@ import 'package:rexofarm/services/web_api/dashboard_api_impl.dart';
 class HomeViewModel extends ChangeNotifier {
   String? _token;
   Driver? _driver;
+  bool _isGettingUser = true;
+  bool get isGettingUser => _isGettingUser;
 
-  PickupRequests? requests;
+  List<PickupRequest>? requests;
+  List<ParticularDelivery>? deliveries;
 
   Driver? get driver => _driver;
 
@@ -38,15 +42,19 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> getUser() async {
     final response = await DashboardApiImpl().getUser(_token!);
 
+    _isGettingUser = false;
+
     _driver = response.data as Driver;
 
     notifyListeners();
   }
 
-  Future<List<PickupRequest>> getPickupRequests() async {
+  void getPickupRequests() async {
     final response = await DashboardApiImpl().getPickupRequests(_token!);
 
-    return (response.data as PickupRequests?)?.list ?? [];
+    requests = (response.data as PickupRequests?)?.list ?? [];
+
+    notifyListeners();
   }
 
   Future<ApiResponse> acceptPickupRequest(String pickupId) async {
@@ -56,5 +64,28 @@ class HomeViewModel extends ChangeNotifier {
     );
 
     return response;
+  }
+
+  Future<void> getAcceptedDeliveries() async {
+
+    final response = await DashboardApiImpl().fetchAcceptedRequest(_token!);
+    deliveries = (response.data as AcceptedDeliveries?)?.list ?? [];
+
+    notifyListeners();
+  }
+
+  void loadData() {
+    getPickupRequests();
+    getAcceptedDeliveries();
+  }
+
+  void refreshData() async {
+    requests = null;
+    deliveries = null;
+
+    notifyListeners();
+
+    getPickupRequests();
+    getAcceptedDeliveries();
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/navigators/tab_item.dart';
 import 'package:rexofarm/screens/dashboard_page.dart';
-import 'package:rexofarm/screens/profile_page.dart';
-import 'package:rexofarm/screens/shipment_page.dart';
+import 'package:rexofarm/screens/profile/profile_page.dart';
+import 'package:rexofarm/screens/shipments/shipment_page.dart';
 
 
 class HomeTabNavigator extends StatelessWidget {

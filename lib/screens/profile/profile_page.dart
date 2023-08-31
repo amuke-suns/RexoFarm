@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/screens/auth/login_page.dart';
+import 'package:rexofarm/screens/profile/vehicle_mgt_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
+import 'package:rexofarm/view_models/profile_view_model.dart';
 import 'package:rexofarm/widgets/profile_extra_card.dart';
 import 'package:rexofarm/widgets/profile_setting_tile.dart';
 
@@ -51,7 +53,7 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                   Expanded(
                     child: ListTile(
                       title: Text(
-                        '${driver?.firstName} ${driver?.lastName}' ?? "No name",
+                        driver?.firstName == null ? "No name" : '${driver?.firstName} ${driver?.lastName}',
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       subtitle: const Text('Driver'),
@@ -123,9 +125,11 @@ class ProfilePage extends StatelessWidget with AlertUtils {
               ),
               ProfileSettingTile(
                 fileName: 'group.png',
-                title: 'Vehicle details',
+                title: 'Vehicle management',
                 subtitle: 'Vehicle Name, Number Plate, etc',
-                onPressed: () {},
+                onPressed: () async {
+                  NavigationUtils.goTo(context, const VehicleManagementPage());
+                },
               ),
               ProfileSettingTile(
                 fileName: 'tick-circle.png',
@@ -181,7 +185,7 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                 color: kDeepRed,
                 onPressed: () async {
                   showLoadingAlert(context, text: 'Logging out');
-                  await Provider.of<HomeViewModel>(
+                  await Provider.of<ProfileViewModel>(
                     context,
                     listen: false,
                   ).logout();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/screens/pickup_details_page.dart';
+import 'package:rexofarm/screens/shipments/pickup_details_page.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/accepted_delivery_card.dart';
@@ -64,7 +64,7 @@ class _ShipmentPageState extends State<ShipmentPage>
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 18, 0),
+          padding: kPagePadding,
           child: TabBarView(
             children: [
               requests == null
@@ -86,7 +86,7 @@ class _ShipmentPageState extends State<ShipmentPage>
                               return RequestCard(
                                 pickupRequest: requests[index],
                                 onTap: () async {
-                                  final isAccepted = await Navigator.push(
+                                  bool? isAccepted = await Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) {
                                       return PickupDetailsPage(
@@ -95,7 +95,7 @@ class _ShipmentPageState extends State<ShipmentPage>
                                     }),
                                   );
 
-                                  if (isAccepted) {
+                                  if (isAccepted == true) {
                                     if (context.mounted) {
                                       Provider.of<HomeViewModel>(
                                         context,

@@ -40,8 +40,6 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
       context,
       listen: true,
     );
-    final dateNow = DateTime.now();
-    final dateYesterday = dateNow.subtract(const Duration(days: 1));
 
     return Scaffold(
       appBar: AppBar(
@@ -66,39 +64,41 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 18, 0),
-        child: provider.isGettingUser ? const ShimmerWidget(type: ShimmerType.dashboard) : const CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Expanded(
+        child: provider.isGettingUser
+            ? const ShimmerWidget(type: ShimmerType.dashboard)
+            : const CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        WalletCard(),
                         SizedBox(height: 10),
-                        ProfileCompletenessCard(percentage: 0),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text(
-                            'Recent Shipments',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              height: 1.25,
-                              color: Color(0xff000000),
-                            ),
-                          ),
-                        ),
                         Expanded(
-                          child: Center(
-                            child: Text('No shipments yet'),
-                          ),
-                        ),
-                        /*const Text(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              WalletCard(),
+                              SizedBox(height: 10),
+                              ProfileCompletenessCard(percentage: 0),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                child: Text(
+                                  'Recent Shipments',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.25,
+                                    color: Color(0xff000000),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text('No shipments yet'),
+                                ),
+                              ),
+                              /*const Text(
                           'Today',
                           style: TextStyle(
                             fontSize: 12,
@@ -161,19 +161,19 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                             ),
                           ],
                         ),*/
-                      ],
-                    ),
-                  ),
-                  /*Center(
+                            ],
+                          ),
+                        ),
+                        /*Center(
                     child: SeeMoreButton(
                       onPressed: seeMoreButtonPressed,
                     ),
                   ),*/
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
       ),
     );
   }

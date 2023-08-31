@@ -36,7 +36,6 @@ class PickupRequest {
   });
 
   factory PickupRequest.fromJson(Map<String, dynamic> json) {
-    print(jsonEncode(json));
     return PickupRequest(
       id: json['_id'],
       status: json['status'],

@@ -9,6 +9,7 @@ import 'package:rexofarm/theme.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/view_models/kyc_view_model.dart';
+import 'package:rexofarm/view_models/profile_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,7 @@ class RexoFarmApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => KycViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
+        ChangeNotifierProvider(create: (_) => ProfileViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -17,10 +17,6 @@ class Order {
 }
 
 abstract class DashboardApi {
-  Future<void> mockPlaceOrder({
-    required String token,
-    required Order order,
-  });
 
   Future<ApiResponse> getUser(String token);
 
@@ -28,10 +24,15 @@ abstract class DashboardApi {
 
   Future<ApiResponse> fetchAcceptedRequest(String token);
 
-  Future<ApiResponse> getParticularRequest(String token, String id);
-
   Future<ApiResponse> acceptPickupRequest({
     required String token,
     required String pickupId,
+  });
+
+  Future<ApiResponse> getAllVehicles(String token);
+
+  Future<ApiResponse> deleteVehicle({
+    required String token,
+    required String vehicleId,
   });
 }

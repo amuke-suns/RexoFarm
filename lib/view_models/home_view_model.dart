@@ -67,4 +67,11 @@ class HomeViewModel extends ChangeNotifier {
     getPickupRequests();
     getAcceptedDeliveries();
   }
+
+  void deleteCurrentUserData() {
+    token = null;
+    _driver = null;
+    requests = null;
+    deliveries = null;
+  }
 }

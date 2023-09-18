@@ -15,6 +15,11 @@ abstract class KycApi {
     required List<File> files,
   });
 
+  Future<ApiResponse> uploadLicenseImages({
+    required String token,
+    required List<File> files,
+  });
+
   Future<ApiResponse> uploadDriversProfile({
     required String token,
     required String state,

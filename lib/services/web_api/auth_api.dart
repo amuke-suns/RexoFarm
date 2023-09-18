@@ -11,6 +11,4 @@ abstract class AuthApi {
   });
 
   Future<ApiResponse> signUp(User user);
-
-  Future<ApiResponse> getUser(String token);
 }

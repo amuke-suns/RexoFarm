@@ -53,7 +53,7 @@ class WalletCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '\u{20A6}250,000', // Naira sign
+                      '\u{20A6}0.00', // Naira sign
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

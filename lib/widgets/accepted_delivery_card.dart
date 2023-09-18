@@ -1,37 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:rexofarm/models/shipment_mock.dart';
-import 'package:rexofarm/screens/shipments/shipment_details_page.dart';
+import 'package:rexofarm/models/accepted_deliveries.dart';
 
-enum ShipmentStatus {
-  latest(value: 'New', color: Color(0xff00a836)),
-  accepted(value: 'Accepted', color: Color(0xFF527E84)),
-  completed(value: "Completed", color: Color(0xff00a836)),
-  ongoing(value: "Ongoing", color: Color(0xfff29528));
+class AcceptedDeliveryCard extends StatelessWidget {
+  final ParticularDelivery acceptedDelivery;
 
-  const ShipmentStatus({
-    required this.value,
-    required this.color,
-  });
 
-  final String value;
-  final Color color;
-}
-
-class ShipmentCard extends StatelessWidget {
-  final Shipment shipment;
-
-  const ShipmentCard({
+  const AcceptedDeliveryCard({
     Key? key,
-    required this.shipment,
+    required this.acceptedDelivery,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ShipmentDetailsPage(shipment: shipment);
-        }));
+        /*Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return PickupDetailsPage(pickupRequest: acceptedDelivery);
+        }));*/
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
@@ -49,7 +35,7 @@ class ShipmentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  shipment.name,
+                  acceptedDelivery.buyer,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     height: 1.0714285714,
@@ -58,7 +44,7 @@ class ShipmentCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  shipment.address,
+                  acceptedDelivery.pickupLocation,
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -69,12 +55,12 @@ class ShipmentCard extends StatelessWidget {
               ],
             ),
             Text(
-              shipment.status.value,
+              acceptedDelivery.status.text,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 height: 1.25,
-                color: shipment.status.color,
+                color: acceptedDelivery.status.color,
               ),
             ),
           ],

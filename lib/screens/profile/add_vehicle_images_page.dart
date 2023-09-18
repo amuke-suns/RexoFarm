@@ -1,25 +1,34 @@
 import 'dart:io';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
-import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
-import 'package:rexofarm/view_models/auth_view_model.dart';
-import 'package:rexofarm/view_models/kyc_view_model.dart';
+import 'package:rexofarm/view_models/profile_view_model.dart';
 
-import 'drivers_address_page.dart';
+class AddVehicleImagesPage extends StatefulWidget {
+  final String vehicleId;
 
-class VehicleImagesPage extends StatefulWidget {
-  const VehicleImagesPage({Key? key}) : super(key: key);
+  const AddVehicleImagesPage({
+    Key? key,
+    required this.vehicleId,
+  }) : super(key: key);
 
   @override
-  State<VehicleImagesPage> createState() => _VehicleImagesPageState();
+  State<AddVehicleImagesPage> createState() => _AddVehicleImagesPageState();
 }
 
-class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
+class _AddVehicleImagesPageState extends State<AddVehicleImagesPage>
+    with AlertUtils {
   final PageController _controller = PageController(initialPage: 0);
+
+  File? _image1;
+  File? _image2;
+  File? _image3;
+  File? _image4;
+
+  bool _toUpload = false;
 
   @override
   void dispose() {
@@ -27,11 +36,59 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
     super.dispose();
   }
 
+  final ImagePicker _picker = ImagePicker();
+
+  Future getImage(int imageIndex) async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        setState(() {
+          _toUpload = true;
+        });
+        switch (imageIndex) {
+          case 1:
+            _image1 = File(pickedFile.path);
+            break;
+          case 2:
+            _image2 = File(pickedFile.path);
+            break;
+          case 3:
+            _image3 = File(pickedFile.path);
+            break;
+          case 4:
+            _image4 = File(pickedFile.path);
+            break;
+        }
+      }
+    });
+  }
+
   void removeImage(int imageIndex) {
-    Provider.of<KycViewModel>(
-      context,
-      listen: false,
-    ).removePickedImage(imageIndex);
+    setState(() {
+      switch (imageIndex) {
+        case 1:
+          _image1 = null;
+          break;
+        case 2:
+          _image2 = null;
+          break;
+        case 3:
+          _image3 = null;
+          break;
+        case 4:
+          _image4 = null;
+          break;
+      }
+      if (_image1 == null &&
+          _image2 == null &&
+          _image3 == null &&
+          _image4 == null) {
+        setState(() {
+          _toUpload = false;
+        });
+      }
+    });
   }
 
   Widget buildImagePreview(File? image, int imageIndex) {
@@ -69,11 +126,11 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
               onTap: () => removeImage(imageIndex),
               child: const CircleAvatar(
                 radius: 12,
-                backgroundColor: kDeepRed,
+                backgroundColor: Colors.red,
                 child: Icon(
-                  Icons.close,
+                  Icons.cancel,
                   color: Colors.white,
-                  size: 12,
+                  size: 18,
                 ),
               ),
             ),
@@ -83,22 +140,33 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
   }
 
   void onUploadButtonPressed(BuildContext context) async {
-    final kycModel = Provider.of<KycViewModel>(context, listen: false);
+    showLoadingAlert(context, text: 'Uploading images');
+    List<File> files = [];
 
-    if (!kycModel.isNoImageSelected()) {
-      showLoadingAlert(context, text: 'Uploading vehicle images');
-      String token = Provider.of<AuthViewModel>(
+    if (_image1 != null) files.add(_image1!);
+    if (_image2 != null) files.add(_image2!);
+    if (_image3 != null) files.add(_image3!);
+    if (_image4 != null) files.add(_image4!);
+
+    if (files.isNotEmpty) {
+
+      final response = await Provider.of<ProfileViewModel>(
         context,
         listen: false,
-      ).userToken!;
-
-      final response = await kycModel.uploadVehicleImages(userToken: token);
+      ).uploadVehicleImages(
+        files: files,
+      );
 
       if (context.mounted) {
-        dismissLoader(context);
+        dismissLoader(context, rootNavigator: true);
 
         if (response.status == ResponseStatus.completed) {
-          NavigationUtils.goTo(context, DriverAddressPage());
+          Provider.of<ProfileViewModel>(
+            context,
+            listen: false,
+          ).refreshData();
+
+          Navigator.pop(context);
         } else {
           showMessageAlert(
             context,
@@ -112,8 +180,6 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
 
   @override
   Widget build(BuildContext context) {
-    final kycModel = Provider.of<KycViewModel>(context, listen: true);
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -150,9 +216,33 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          kycModel.isNoImageSelected()
-                              ? showDottedBorder(context)
-                              : _buildImagesGrid(kycModel),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () => getImage(1),
+                                child: buildImagePreview(_image1, 1),
+                              ),
+                              InkWell(
+                                onTap: () => getImage(2),
+                                child: buildImagePreview(_image2, 2),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () => getImage(3),
+                                child: buildImagePreview(_image3, 3),
+                              ),
+                              InkWell(
+                                onTap: () => getImage(4),
+                                child: buildImagePreview(_image4, 4),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 40),
                           Container(
                             padding: const EdgeInsets.all(12),
@@ -193,10 +283,8 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: kycModel.isNoImageSelected()
-                            ? () => NavigationUtils.goTo(
-                                context, DriverAddressPage())
-                            : () => onUploadButtonPressed(context),
+                        onPressed: _toUpload
+                            ? () => onUploadButtonPressed(context) : null,
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -204,9 +292,9 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: kAppPrimaryColor,
                         ),
-                        child: Text(
-                          kycModel.isNoImageSelected() ? 'Next' : 'Upload',
-                          style: const TextStyle(
+                        child: const Text(
+                          'Upload',
+                          style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -214,81 +302,10 @@ class _VehicleImagesPageState extends State<VehicleImagesPage> with AlertUtils {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () {
-                        NavigationUtils.clearStackAndHome(context);
-                      },
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: kAppPrimaryColor,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               )
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildImagesGrid(KycViewModel kycModel) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () => kycModel.getSingleImageFromDevice(0),
-              child: buildImagePreview(kycModel.image1, 0),
-            ),
-            InkWell(
-              onTap: () => kycModel.getSingleImageFromDevice(1),
-              child: buildImagePreview(kycModel.image2, 1),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () => kycModel.getSingleImageFromDevice(2),
-              child: buildImagePreview(kycModel.image3, 2),
-            ),
-            InkWell(
-              onTap: () => kycModel.getSingleImageFromDevice(3),
-              child: buildImagePreview(kycModel.image4, 3),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget showDottedBorder(BuildContext context) {
-    return DottedBorder(
-      color: const Color.fromRGBO(0, 110, 33, 1),
-      strokeWidth: 1,
-      dashPattern: const [25, 20],
-      borderType: BorderType.RRect,
-      radius: const Radius.circular(8),
-      child: InkWell(
-        onTap: () => Provider.of<KycViewModel>(context, listen: false)
-            .getImagesFromDevice(),
-        child: Container(
-          width: double.infinity,
-          height: 200,
-          alignment: Alignment.center,
-          child: Image.asset(
-            'images/Group.png',
-            width: 208.36,
-            height: 170,
-            color: Colors.grey[400],
           ),
         ),
       ),

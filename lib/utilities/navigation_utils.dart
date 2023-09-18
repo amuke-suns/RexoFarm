@@ -31,6 +31,15 @@ class NavigationUtils {
     );
   }
 
+  static clearStackTillFirstAndGoTo(BuildContext context, Widget destination) {
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => destination,
+      ),
+          (Route<dynamic> route) => route.isFirst,
+    );
+  }
+
   static clearStackAndHome(BuildContext context) {
     // this method is called during the KYC uploading
     // which is after a successful login

@@ -3,7 +3,7 @@ import 'package:rexofarm/utilities/constants.dart';
 
 class MainPageButton extends StatelessWidget {
   final String label;
-  final Function() onPressed;
+  final Function()? onPressed;
 
   const MainPageButton({
     Key? key,

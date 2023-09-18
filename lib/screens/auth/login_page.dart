@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/screens/reset_password_page.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/license_front_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
                               alignment: Alignment.centerRight,
                               child: TextButton(
                                 onPressed: () {
-                                  // Handle "Reset password" logic
+                                  NavigationUtils.goTo(context, const ResetPasswordPage());
                                 },
                                 child: const Text(
                                   'Reset password',

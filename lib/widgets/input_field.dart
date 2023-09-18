@@ -4,9 +4,11 @@ class InputField extends StatefulWidget {
   final String labelText;
   final String? hintText;
   final Function(String?)? onSaved;
+  final Function(String?)? onChanged;
   final String? Function(String?) validator;
   final bool obscureText;
   final bool showToggle;
+  final TextInputType? keyboardType;
 
   const InputField({
     Key? key,
@@ -14,8 +16,10 @@ class InputField extends StatefulWidget {
     required this.hintText,
     required this.validator,
     required this.onSaved,
+    this.onChanged,
     this.obscureText = false,
     this.showToggle = false,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -46,6 +50,8 @@ class _InputFieldState extends State<InputField> {
           ),
           child: TextFormField(
             onSaved: widget.onSaved,
+            onChanged: widget.onChanged,
+            keyboardType: widget.keyboardType,
             validator: widget.validator,
             obscureText: widget.obscureText && _isObscure,
             style: const TextStyle(

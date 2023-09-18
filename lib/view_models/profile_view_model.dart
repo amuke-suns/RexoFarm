@@ -24,6 +24,7 @@ class ProfileViewModel extends ChangeNotifier {
     return Future.delayed(const Duration(seconds: 2), () {
       SecureStorage().logoutUser();
     });
+    _deleteCurrentUserData();
   }
 
   Future<void> getAllVehicles() async {
@@ -72,5 +73,11 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
 
     getAllVehicles();
+  }
+
+  void _deleteCurrentUserData() {
+    _token = null;
+    vehicles = null;
+    _vehicleId = null;
   }
 }

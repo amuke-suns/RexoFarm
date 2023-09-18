@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/screens/auth/create_acct.dart';
+import 'package:rexofarm/screens/auth/login_page.dart';
 import 'package:rexofarm/screens/home.dart';
 import 'package:rexofarm/screens/onboarding/onboarding_page.dart';
 import 'package:rexofarm/services/storage/secure_storage.dart';
@@ -10,6 +11,7 @@ import 'package:rexofarm/view_models/auth_view_model.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/view_models/kyc_view_model.dart';
 import 'package:rexofarm/view_models/profile_view_model.dart';
+import 'package:rexofarm/view_models/reset_password_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,11 +53,16 @@ class RexoFarmApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => KycViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => ResetPasswordViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'RexoFarm',
         theme: RexoFarmAppTheme.light(),
+        routes: {
+          '/signUp': (context) => const CreateAccountPage(),
+          '/login': (context) => const LoginPage(),
+        },
         home: showOnBoarding
             ? const OnBoardingScreen()
             : FutureBuilder<String?>(

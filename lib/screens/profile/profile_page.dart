@@ -53,7 +53,9 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                   Expanded(
                     child: ListTile(
                       title: Text(
-                        driver?.firstName == null ? "No name" : '${driver?.firstName} ${driver?.lastName}',
+                        driver?.firstName == null
+                            ? "No name"
+                            : '${driver?.firstName} ${driver?.lastName}',
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       subtitle: const Text('Driver'),
@@ -190,6 +192,10 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                     listen: false,
                   ).logout();
                   if (context.mounted) {
+                    Provider.of<HomeViewModel>(
+                      context,
+                      listen: false,
+                    ).deleteCurrentUserData();
                     dismissLoader(context);
 
                     NavigationUtils.clearStackAndGoTo(

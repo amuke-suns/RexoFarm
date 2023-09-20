@@ -99,7 +99,6 @@ class AuthApiImpl implements AuthApi {
 
   @override
   Future<ApiResponse> resetPasswordInitiate({
-    //required String token,
     required String email,
   }) async {
     ApiResponse apiResponse;
@@ -127,7 +126,9 @@ class AuthApiImpl implements AuthApi {
       apiResponse = ApiResponse.completed(token: token);
     } else {
       final json = jsonDecode(response.body);
-      apiResponse = ApiResponse.error(json["message"]);
+      String error = json['error'] ?? '';
+      String message = json['message'] ?? '';
+      apiResponse = ApiResponse.error('$error: $message');
     }
 
     return apiResponse;

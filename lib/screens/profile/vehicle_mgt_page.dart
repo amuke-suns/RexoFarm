@@ -53,41 +53,48 @@ class _VehicleManagementPageState extends State<VehicleManagementPage>
                           listen: false,
                         ).refreshData();
                       },
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: vehicles.length,
-                            itemBuilder: (context, index) {
-                              return RegisteredVehicleCard(
-                                vehicle: vehicles[index],
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 50),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16.0,
-                                horizontal: 24.0,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 0,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return RegisteredVehicleCard(
+                                  vehicle: vehicles[index],
+                                );
+                              },
+                              childCount: vehicles.length,
                             ),
-                            onPressed: () async {
-                              NavigationUtils.goTo(context, AddVehicleDetailsPage());
-                            },
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
+                          ),
+                          SliverToBoxAdapter(
+                            child: Column(
                               children: [
-                                Icon(Icons.add),
-                                SizedBox(width: 8),
-                                Text('Add Vehicle')
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0,
+                                      horizontal: 24.0,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    elevation: 0,
+                                  ),
+                                  onPressed: () async {
+                                    NavigationUtils.goTo(
+                                        context, AddVehicleDetailsPage());
+                                  },
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.add),
+                                      SizedBox(width: 8),
+                                      Text('Add Vehicle')
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),

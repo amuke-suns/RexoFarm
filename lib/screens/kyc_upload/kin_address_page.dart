@@ -51,7 +51,7 @@ class NextOfKinAddressPage extends StatelessWidget with AlertUtils {
                                 });
                               },
                               value: selectedNigeriaState,
-                              hintText: 'Select your state of residence',
+                              hintText: 'Select your State of Residence',
                               // Customize the decoration properties here
                             ),
                             const SizedBox(height: 16),

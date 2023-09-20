@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/models/delivery_status.dart';
-import 'package:rexofarm/models/shipment_mock.dart';
+// import 'package:rexofarm/models/delivery_status.dart';
+// import 'package:rexofarm/models/shipment_mock.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/shimmer_widget.dart';
-import 'package:rexofarm/widgets/shipment_card.dart';
-import 'package:rexofarm/widgets/profile_completeness_card.dart';
-import 'package:rexofarm/widgets/see_more_button.dart';
+// import 'package:rexofarm/widgets/shipment_card.dart';
+// import 'package:rexofarm/widgets/profile_completeness_card.dart';
+// import 'package:rexofarm/widgets/see_more_button.dart';
 import 'package:rexofarm/widgets/wallet_card.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -80,7 +80,7 @@ class _DashboardPageState extends State<DashboardPage> with AlertUtils {
                             children: [
                               WalletCard(),
                               SizedBox(height: 10),
-                              ProfileCompletenessCard(percentage: 0),
+                              // ProfileCompletenessCard(percentage: 0),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Text(

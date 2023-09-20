@@ -7,6 +7,7 @@ import 'package:rexofarm/widgets/form_header_card.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/widgets/phone_input.dart';
 import 'package:rexofarm/validators.dart';
+import 'package:rexofarm/widgets/gender_dropdown.dart';
 
 import 'kin_address_page.dart';
 
@@ -17,6 +18,8 @@ class NextOfKinPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Gender? selectedGenderValue;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -71,17 +74,16 @@ class NextOfKinPage extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            InputField(
+                            GenderDropdown(
                               labelText: 'Gender',
-                              onSaved: (value) {
-                                Provider.of<KycViewModel>(
-                                  context,
-                                  listen: false,
-                                ).kin.gender = value!;
+                              onChanged: (selectedGender) {
+                                selectedGenderValue = selectedGender;
                               },
-                              validator: Validators.validateGender,
-                              hintText: 'Choose your Gender',
+                              value: selectedGenderValue,
+                              hintText: 'Select a gender',
                             ),
+
+
                             const SizedBox(height: 16),
                             InputField(
                               labelText: 'Relationship',

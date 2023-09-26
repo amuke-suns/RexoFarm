@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/RegisteredVehicles.dart';
 import 'package:rexofarm/models/api_response.dart';
-import 'package:rexofarm/screens/shipments/shipment_details_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/view_models/profile_view_model.dart';
+import 'package:rexofarm/widgets/text_with_header.dart';
 
 class RegisteredVehiclePage extends StatelessWidget with AlertUtils {
   final RegisteredVehicle vehicle;

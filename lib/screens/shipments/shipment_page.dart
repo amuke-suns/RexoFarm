@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/screens/shipments/pickup_details_page.dart';
+import 'package:rexofarm/screens/shipments/new_request_details_page.dart';
 import 'package:rexofarm/utilities/constants.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/widgets/accepted_delivery_card.dart';
@@ -89,7 +89,7 @@ class _ShipmentPageState extends State<ShipmentPage>
                                   bool? isAccepted = await Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) {
-                                      return PickupDetailsPage(
+                                      return NewRequestDetailsPage(
                                         pickupRequest: requests[index],
                                       );
                                     }),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/models/accepted_deliveries.dart';
+import 'package:rexofarm/screens/shipments/accepted_shipment_details_page.dart';
 
 class AcceptedDeliveryCard extends StatelessWidget {
   final ParticularDelivery acceptedDelivery;
-
 
   const AcceptedDeliveryCard({
     Key? key,
@@ -12,12 +12,11 @@ class AcceptedDeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
-        /*Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return PickupDetailsPage(pickupRequest: acceptedDelivery);
-        }));*/
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return AcceptedShipmentDetailsPage(delivery: acceptedDelivery);
+        }));
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),

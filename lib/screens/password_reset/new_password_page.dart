@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
-import 'package:rexofarm/screens/password_success_page.dart';
+import 'package:rexofarm/screens/password_reset/password_success_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/validators.dart';

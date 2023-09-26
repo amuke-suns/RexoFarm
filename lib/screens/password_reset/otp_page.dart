@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
-import 'package:rexofarm/screens/new_password_page.dart';
+import 'package:rexofarm/screens/password_reset/new_password_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/view_models/reset_password_view_model.dart';

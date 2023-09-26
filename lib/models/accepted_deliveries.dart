@@ -79,3 +79,21 @@ class Item {
   }
 }
 
+extension ListExtensions on List<Item> {
+  String getItemNames() {
+    String strItems = "";
+    for (Item item in this) {
+      strItems += "${item.item}, ";
+    }
+    return strItems.substring(0, strItems.length - 2);
+  }
+
+  String getItemQty() {
+    String strQty = "";
+    for (Item item in this) {
+      strQty += "${item.quantity},";
+    }
+    return strQty.substring(0, strQty.length - 2);
+  }
+}
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/models/pickup_requests.dart';
-import 'package:rexofarm/screens/shipments/pickup_details_page.dart';
+import 'package:rexofarm/screens/shipments/new_request_details_page.dart';
 
 class RequestCard extends StatelessWidget {
   final PickupRequest pickupRequest;

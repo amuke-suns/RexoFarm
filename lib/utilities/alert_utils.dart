@@ -101,7 +101,7 @@ mixin AlertUtils {
   showSuccessSnackBar(
     BuildContext context, {
     required String title,
-    required String categories,
+    String? categories,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -121,14 +121,16 @@ mixin AlertUtils {
             Text.rich(TextSpan(
               text: title,
               style: DefaultTextStyle.of(context).style.apply(
-                color: Colors.black,
-                fontWeightDelta: 2,
-              ),
+                    color: Colors.black,
+                    fontWeightDelta: 2,
+                  ),
               children: [
-                TextSpan(
-                  text: ' deleted from $categories.',
-                  style: const TextStyle(fontWeight: FontWeight.normal),
-                )
+                categories == null
+                    ? const TextSpan()
+                    : TextSpan(
+                        text: ' deleted from $categories.',
+                        style: const TextStyle(fontWeight: FontWeight.normal),
+                      )
               ],
             )),
           ],
@@ -198,7 +200,7 @@ mixin AlertUtils {
               'OK',
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context, rootNavigator: true).pop();
             }),
       ],
     );

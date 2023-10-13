@@ -159,7 +159,6 @@ class AuthApiImpl implements AuthApi {
       return apiResponse;
     }
 
-
     if (response.statusCode == 200 || response.statusCode == 201) {
       final json = jsonDecode(response.body);
       final token = json['data']['token']['payload'];
@@ -196,11 +195,47 @@ class AuthApiImpl implements AuthApi {
       );
       return apiResponse;
     }
-    print(response.statusCode);
-    print(response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       apiResponse = ApiResponse.completed(token: verificationToken);
+    } else {
+      apiResponse = ApiResponse.error("Error occurred! Please try again");
+    }
+
+    return apiResponse;
+  }
+
+  @override
+  Future<ApiResponse> changePassword({
+    required String token,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    ApiResponse apiResponse;
+    http.Response response;
+
+    String endpoint = 'v1/user/change-password';
+
+    try {
+      response = await http.patch(
+        Uri.https(_baseUrl, endpoint),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          'oldPassword': oldPassword,
+          'newPassword': newPassword,
+        },
+      );
+    } catch (error) {
+      apiResponse = ApiResponse.error(
+        'Please check your internet connection and try again',
+      );
+      return apiResponse;
+    }
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      apiResponse = ApiResponse.completed(token: token);
     } else {
       apiResponse = ApiResponse.error("Error occurred! Please try again");
     }

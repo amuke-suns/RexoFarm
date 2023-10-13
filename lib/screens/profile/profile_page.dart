@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/screens/auth/login_page.dart';
+import 'package:rexofarm/screens/profile/change_password_page.dart';
 import 'package:rexofarm/screens/profile/vehicle_mgt_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/constants.dart';
@@ -123,7 +124,9 @@ class ProfilePage extends StatelessWidget with AlertUtils {
                 fileName: 'lock.png',
                 title: 'Password',
                 subtitle: 'Change your password',
-                onPressed: () {},
+                onPressed: () {
+                  NavigationUtils.goTo(context, const ChangePasswordPage());
+                },
               ),
               ProfileSettingTile(
                 fileName: 'group.png',

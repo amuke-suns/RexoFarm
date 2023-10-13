@@ -83,9 +83,9 @@ class _OtpPageState extends State<OtpPage> with AlertUtils {
                     const SizedBox(height: 100),
                     TextButton(
                       onPressed: () {
-                        NavigationUtils.goTo(context, const NewPasswordPage());
+                        // NavigationUtils.goTo(context, const NewPasswordPage());
                       },
-                      child: const Text('Resent OTP'),
+                      child: const Text('Resend OTP'),
                     ),
                     const SizedBox(height: 20),
                     MainPageButton(

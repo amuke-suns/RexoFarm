@@ -8,6 +8,7 @@ import 'package:rexofarm/services/storage/secure_storage.dart';
 import 'package:rexofarm/services/storage/storage_service.dart';
 import 'package:rexofarm/theme.dart';
 import 'package:rexofarm/view_models/auth_view_model.dart';
+import 'package:rexofarm/view_models/change_password_view_model.dart';
 import 'package:rexofarm/view_models/home_view_model.dart';
 import 'package:rexofarm/view_models/kyc_view_model.dart';
 import 'package:rexofarm/view_models/profile_view_model.dart';
@@ -54,6 +55,7 @@ class RexoFarmApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),
         ChangeNotifierProvider(create: (_) => ResetPasswordViewModel()),
+        ChangeNotifierProvider(create: (_) => ChangePasswordViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

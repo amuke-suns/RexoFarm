@@ -3,7 +3,7 @@ import 'package:rexofarm/models/api_response.dart';
 import 'package:rexofarm/services/web_api/auth_api_impl.dart';
 
 class ResetPasswordViewModel extends ChangeNotifier {
-  String email = 'sundayamuke7@gmail.com';
+  String email = '';
   String? otp;
   String? token;
   late String _password;

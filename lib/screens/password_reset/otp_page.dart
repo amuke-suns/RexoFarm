@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
-import 'package:rexofarm/screens/new_password_page.dart';
+import 'package:rexofarm/screens/password_reset/new_password_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/view_models/reset_password_view_model.dart';
@@ -83,9 +83,9 @@ class _OtpPageState extends State<OtpPage> with AlertUtils {
                     const SizedBox(height: 100),
                     TextButton(
                       onPressed: () {
-                        NavigationUtils.goTo(context, const NewPasswordPage());
+                        // NavigationUtils.goTo(context, const NewPasswordPage());
                       },
-                      child: const Text('Resent OTP'),
+                      child: const Text('Resend OTP'),
                     ),
                     const SizedBox(height: 20),
                     MainPageButton(

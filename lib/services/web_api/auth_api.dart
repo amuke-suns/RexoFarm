@@ -23,4 +23,10 @@ abstract class AuthApi {
     required String verificationToken,
     required String password,
   });
+
+  Future<ApiResponse> changePassword({
+    required String token,
+    required String oldPassword,
+    required String newPassword,
+  });
 }

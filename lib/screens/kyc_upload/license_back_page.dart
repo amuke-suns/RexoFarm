@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rexofarm/layouts/upload_single_image_layout.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
+import 'package:rexofarm/view_models/kyc_view_model.dart';
+import '../../view_models/auth_view_model.dart';
 import 'nin_slip_page.dart';
 
 class LicenseBackPage extends StatelessWidget {
@@ -18,6 +21,19 @@ class LicenseBackPage extends StatelessWidget {
         onNextPressed: () {
           NavigationUtils.goTo(context, const NinSlipPage());
         },
-        onUploadPressed: (File file) {});
+        onUploadPressed: (File file) {
+          String token = Provider.of<AuthViewModel>(
+            context,
+            listen: false,
+          ).userToken!;
+
+          return Provider.of<KycViewModel>(
+            context,
+            listen: false,
+          ).uploadLicenseImages(
+            userToken: token,
+            backLicenseImage: file,
+          );
+        });
   }
 }

@@ -75,7 +75,7 @@ class KycApiImpl implements KycApi {
 
       // multipart that takes file
       var multipartFile = http.MultipartFile(
-        'file',
+        'files',
         stream,
         length,
         filename: p.basename(imageFile.path),
@@ -243,6 +243,61 @@ class KycApiImpl implements KycApi {
       apiResponse = ApiResponse.error(
         'Error occurred! Please try uploading again',
       );
+    }
+
+    return apiResponse;
+  }
+
+  @override
+  Future<ApiResponse> uploadLicenseImages({
+    required String token,
+    required List<File> files,
+  }) async {
+    ApiResponse apiResponse;
+    http.StreamedResponse response;
+
+    try {
+      // string to uri
+      var uri = Uri.parse("https://$_baseUrl/kyc/driver-license");
+      // create multipart request
+      var request = http.MultipartRequest("POST", uri);
+      request.headers["Authorization"] = 'Bearer $token';
+
+      for (File file in files) {
+        // open a byte stream, cast it and get file length
+        var stream = http.ByteStream(file.openRead());
+        stream.cast();
+        var length = await file.length();
+        // multipart that takes file
+        var multipartFile = http.MultipartFile(
+          'file',
+          stream,
+          length,
+          filename: p.basename(file.path),
+        );
+        // add file to multipart
+        request.files.add(multipartFile);
+      }
+      // send
+      response = await request.send();
+    } catch (e) {
+      print(e);
+      return ApiResponse.error(
+        'Error occurred! Please check internet connection and try again',
+      );
+    }
+
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+
+    print(response.statusCode);
+    print('Response $responseData');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      apiResponse = ApiResponse.completed(token: token);
+    } else {
+      final json = jsonDecode(responseString);
+      apiResponse = ApiResponse.error(json['message']);
     }
 
     return apiResponse;

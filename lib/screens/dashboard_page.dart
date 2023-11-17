@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rexofarm/models/shipment_mock.dart';
-import 'package:rexofarm/view_models/auth_view_model.dart';
-import 'package:rexofarm/widgets/shipment_card.dart';
-import 'package:rexofarm/widgets/profile_completeness_card.dart';
-import 'package:rexofarm/widgets/see_more_button.dart';
+// import 'package:rexofarm/models/delivery_status.dart';
+// import 'package:rexofarm/models/shipment_mock.dart';
+import 'package:rexofarm/utilities/alert_utils.dart';
+import 'package:rexofarm/view_models/home_view_model.dart';
+import 'package:rexofarm/widgets/shimmer_widget.dart';
+// import 'package:rexofarm/widgets/shipment_card.dart';
+// import 'package:rexofarm/widgets/profile_completeness_card.dart';
+// import 'package:rexofarm/widgets/see_more_button.dart';
 import 'package:rexofarm/widgets/wallet_card.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -14,7 +17,7 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage> with AlertUtils {
   void onWithdrawButtonPressed() {
     // Add your desired functionality when the withdraw button is pressed
     print('Withdraw button pressed');
@@ -26,10 +29,17 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   @override
+  void initState() {
+    Provider.of<HomeViewModel>(context, listen: false).getUser();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthViewModel>(context, listen: true);
-    final dateNow = DateTime.now();
-    final dateYesterday = dateNow.subtract(const Duration(days: 1));
+    final provider = Provider.of<HomeViewModel>(
+      context,
+      listen: true,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () async {},
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Image.asset(
@@ -54,34 +64,41 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 18, 0),
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Expanded(
+        child: provider.isGettingUser
+            ? const ShimmerWidget(type: ShimmerType.dashboard)
+            : const CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const WalletCard(),
-                        const SizedBox(height: 10),
-                        const ProfileCompletenessCard(percentage: 83),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text(
-                            'Recent Shipments',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              height: 1.25,
-                              color: Color(0xff000000),
-                            ),
-                          ),
-                        ),
-                        const Text(
+                        SizedBox(height: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              WalletCard(),
+                              SizedBox(height: 10),
+                              // ProfileCompletenessCard(percentage: 0),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                child: Text(
+                                  'Recent Shipments',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.25,
+                                    color: Color(0xff000000),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text('No shipments yet'),
+                                ),
+                              ),
+                              /*const Text(
                           'Today',
                           style: TextStyle(
                             fontSize: 12,
@@ -94,16 +111,15 @@ class _DashboardPageState extends State<DashboardPage> {
                           shipment: Shipment(
                             name: 'Fish',
                             address: 'CMD road, Magodo, Lagos',
-                            status: ShipmentStatus.completed,
+                            status: DeliveryStatus.delivered,
                             date: dateNow,
                           ),
                         ),
-
                         ShipmentCard(
                           shipment: Shipment(
                             name: 'Vegetables',
                             address: 'Chevron road, Lekki, Lagos',
-                            status: ShipmentStatus.ongoing,
+                            status: DeliveryStatus.ongoing,
                             date: DateTime.now(),
                           ),
                         ),
@@ -123,7 +139,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               shipment: Shipment(
                                 name: 'Plantains',
                                 address: 'Allen Avenue, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
@@ -131,34 +147,33 @@ class _DashboardPageState extends State<DashboardPage> {
                               shipment: Shipment(
                                 name: 'Vegetables',
                                 address: 'Alausa, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
-
                             ShipmentCard(
                               shipment: Shipment(
                                 name: 'Grapes',
                                 address: 'Alausa, Ikeja, Lagos',
-                                status: ShipmentStatus.completed,
+                                status: DeliveryStatus.delivered,
                                 date: dateYesterday,
                               ),
                             ),
                           ],
+                        ),*/
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Center(
+                        /*Center(
                     child: SeeMoreButton(
                       onPressed: seeMoreButtonPressed,
                     ),
-                  ),
+                  ),*/
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
       ),
     );
   }

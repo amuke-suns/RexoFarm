@@ -2,6 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rexofarm/utilities/constants.dart';
+import 'package:rexofarm/widgets/shimmer_widget.dart';
+
+enum AlertType {
+  success,
+  error,
+}
 
 mixin AlertUtils {
   Future<bool> showConfirmationDialog(BuildContext context) async {
@@ -29,6 +35,114 @@ mixin AlertUtils {
       },
     );
     return shouldPop!;
+  }
+
+  Future<bool> showCancelDialog(
+    BuildContext context, {
+    required String title,
+    required String description,
+  }) async {
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(child: Text(title)),
+          content: Text(description),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+            const SizedBox(width: 12),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                backgroundColor: const Color(0xFFDE3730),
+                elevation: 0,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text(title),
+            ),
+          ],
+        );
+      },
+    );
+    return shouldPop ?? false;
+  }
+
+  showInfoSnackBar(
+    BuildContext context, {
+    required String description,
+    required AlertType type,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        padding: EdgeInsets.zero,
+        backgroundColor: type == AlertType.success
+            ? kAppSecondaryColor
+            : Colors.redAccent.shade100,
+        content: ListTile(
+          leading: type == AlertType.success ? kSuccessIcon : kErrorIcon,
+          title: Text(description),
+        ),
+      ),
+    );
+  }
+
+  showSuccessSnackBar(
+    BuildContext context, {
+    required String title,
+    String? categories,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(color: kAppPrimaryColor),
+        ),
+        elevation: 0,
+        backgroundColor: const Color(0xFFD4FFCE),
+        content: Row(
+          children: [
+            const Icon(
+              Icons.check_circle,
+              color: kAppPrimaryColor,
+            ),
+            const SizedBox(width: 10),
+            Text.rich(TextSpan(
+              text: title,
+              style: DefaultTextStyle.of(context).style.apply(
+                    color: Colors.black,
+                    fontWeightDelta: 2,
+                  ),
+              children: [
+                categories == null
+                    ? const TextSpan()
+                    : TextSpan(
+                        text: ' deleted from $categories.',
+                        style: const TextStyle(fontWeight: FontWeight.normal),
+                      )
+              ],
+            )),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 200,
+          left: 10,
+          right: 10,
+        ),
+      ),
+    );
   }
 
   showLoadingAlert(BuildContext context, {required String text}) {
@@ -86,7 +200,7 @@ mixin AlertUtils {
               'OK',
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context, rootNavigator: true).pop();
             }),
       ],
     );
@@ -101,5 +215,7 @@ mixin AlertUtils {
     );
   }
 
-  void dismissLoader(BuildContext context) => Navigator.pop(context);
+  void dismissLoader(BuildContext context, {bool rootNavigator = false}) {
+    Navigator.of(context, rootNavigator: rootNavigator).pop();
+  }
 }

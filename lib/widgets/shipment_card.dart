@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rexofarm/models/shipment_mock.dart';
-import 'package:rexofarm/screens/shipment_details_page.dart';
+import 'package:rexofarm/screens/shipments/shipment_details_page.dart';
 
 enum ShipmentStatus {
   latest(value: 'New', color: Color(0xff00a836)),

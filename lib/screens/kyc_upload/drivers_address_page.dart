@@ -11,6 +11,9 @@ import 'package:rexofarm/widgets/form_header_card.dart';
 import 'package:rexofarm/widgets/input_field.dart';
 import 'package:rexofarm/validators.dart';
 
+import '../../widgets/nigeria_state_dropdown.dart';
+import 'package:rexofarm/view_models/nigeria_states.dart';
+
 class DriverAddressPage extends StatelessWidget with AlertUtils {
   final _formKey = GlobalKey<FormState>();
 
@@ -18,6 +21,7 @@ class DriverAddressPage extends StatelessWidget with AlertUtils {
 
   @override
   Widget build(BuildContext context) {
+    NigeriaState? selectedNigeriaState;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -41,17 +45,17 @@ class DriverAddressPage extends StatelessWidget with AlertUtils {
                             key: _formKey,
                             child: Column(
                               children: [
-                                InputField(
+                                NigeriaStateDropdown(
                                   labelText: 'State of Residence',
-                                  onSaved: (value) {
-                                    Provider.of<KycViewModel>(
-                                      context,
-                                      listen: false,
-                                    ).driversAddress.state = value!;
+                                  onChanged: (selectedState) {
+                                    setState(() {
+                                      selectedNigeriaState = selectedState;
+                                    });
                                   },
-                                  validator: Validators.validateState,
-                                  hintText: 'Enter your state of residence',
-                                ),
+                                  value: selectedNigeriaState,
+                                  hintText: 'Select your State of Residence',
+                                  // Customize the decoration properties here
+                                  ),
                                 const SizedBox(height: 16),
                                 InputField(
                                   labelText: 'City',
@@ -158,4 +162,6 @@ class DriverAddressPage extends StatelessWidget with AlertUtils {
       }
     }
   }
+
+  void setState(Null Function() param0) {}
 }

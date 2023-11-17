@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rexofarm/models/api_response.dart';
+import 'package:rexofarm/screens/password_reset/reset_password_page.dart';
 import 'package:rexofarm/utilities/navigation_utils.dart';
 import 'package:rexofarm/screens/kyc_upload/license_front_page.dart';
 import 'package:rexofarm/utilities/alert_utils.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
                               alignment: Alignment.centerRight,
                               child: TextButton(
                                 onPressed: () {
-                                  // Handle "Reset password" logic
+                                  NavigationUtils.goTo(context, const ResetPasswordPage());
                                 },
                                 child: const Text(
                                   'Reset password',
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
                             const SizedBox(height: 40),
                             MainPageButton(
                               label: "Log in",
-                              onPressed: _loginButtonPressed,
+                              onPressed: () => _loginButtonPressed(context),
                             ),
                           ],
                         ),
@@ -131,20 +132,24 @@ class _LoginPageState extends State<LoginPage> with AlertUtils {
     );
   }
 
-  void _loginButtonPressed() async {
+  void _loginButtonPressed(BuildContext context) async {
     final form = _formKey.currentState!;
     if (form.validate()) {
       form.save();
       showLoadingAlert(context, text: 'Logging in');
 
-      final response =
-          await Provider.of<AuthViewModel>(context, listen: false).loginUser();
+      final response = await Provider.of<AuthViewModel>(
+        context,
+        listen: false,
+      ).loginUser();
 
-      handleResponse(response);
+      if (context.mounted) {
+        handleResponse(context, response);
+      }
     }
   }
 
-  void handleResponse(ApiResponse response) {
+  void handleResponse(BuildContext context, ApiResponse response) {
     dismissLoader(context);
     if (response.status == ResponseStatus.completed) {
       // Clear the navigation stack and go to the KYC page
